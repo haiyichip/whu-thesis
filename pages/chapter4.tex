@@ -1,25 +1,371 @@
-\chapter{螺旋桨湿模态预报高性能机器学习方法}
+\chapter{螺旋桨湿模态机器学习预测方法}
 
 \section{引言}
 
-本节内容待补充。
+第二章和第三章分别从高精度仿真和模态试验两个层面建立并验证了螺旋桨干模态、湿模态频率分析方法。在此基础上，若仍然针对每一副待分析螺旋桨都重新开展完整的有限元建模、流固耦合计算和模态识别，不仅计算成本较高，而且难以满足工程快速预报的需求。因此，有必要在已有仿真数据库和试验修正规律的基础上，引入机器学习方法，建立螺旋桨几何参数与模态频率之间的非线性映射关系，实现对干模态频率的快速预测，并进一步结合附连水频率修正系数完成湿模态频率预报。
+
+机器学习方法能够从样本数据中自动提取输入参数与输出响应之间的复杂关系，特别适用于高维、强非线性、多输出的回归问题。对于本文研究对象而言，螺旋桨模态频率同时受到桨径、叶数、径向剖面弦长分布和厚度分布等多种因素耦合作用，传统经验公式难以准确描述其变化规律，而数据驱动模型可以利用第二章构建的大规模仿真样本进行训练，从而形成具有较高泛化能力的快速预测工具。
+
+本章首先介绍随机森林、梯度提升回归、高斯过程回归和前馈神经网络四类典型机器学习回归模型的基本原理；随后，基于第二章建立的螺旋桨干模态数据库，对四种模型开展训练与测试，并从 MAE、RMSE、$R^2$ 和 MAPE 等指标对其预测性能进行比较；最后，在优选模型的基础上，结合第三章得到的湿模态频率修正规律，给出螺旋桨湿模态频率的机器学习快速预测流程。
 
 \section{机器学习基本理论}
 
-本节内容待补充。
+设螺旋桨几何特征向量为
+\begin{equation}
+  \mathbf{x} = [x_1, x_2, \cdots, x_n]^{\mathrm{T}}
+\end{equation}
+对应的模态频率响应为
+\begin{equation}
+  y = f(\mathbf{x}) + \varepsilon
+\end{equation}
+其中，$f(\mathbf{x})$ 为待学习的非线性映射关系，$\varepsilon$ 为样本噪声项。机器学习回归的目标是基于训练样本学习映射函数 $f(\cdot)$，并利用该函数对新螺旋桨样本的模态频率进行预测。
 
-\section{螺旋桨湿模态机器学习预报难点分析}
+\subsection{随机森林模型}
 
-本节内容待补充。
+随机森林回归模型是一种基于袋装思想和决策树集成的非参数学习方法，由 Breiman 提出\cite{intro:14}。该方法通过对原始样本进行有放回重采样构造多个训练子集，并在每个子集上训练一棵回归树，最终将所有回归树的输出进行平均，从而降低单一决策树易过拟合、泛化能力不足的问题。
 
-\section{螺旋桨模态预报高性能预报流程}
+对于某一节点，回归树通过划分特征空间使得划分后子区域内的方差最小。若将样本按某一特征划分为区域 $R_1$ 和 $R_2$，则其最优划分可表示为
+\begin{equation}
+  \min \left(
+  \sum_{x_i \in R_1} \left(y_i - \bar{y}_{R_1}\right)^2 +
+  \sum_{x_i \in R_2} \left(y_i - \bar{y}_{R_2}\right)^2
+  \right)
+\end{equation}
+其中，$\bar{y}_{R_1}$ 和 $\bar{y}_{R_2}$ 分别为两个区域内样本输出的均值。
 
-本节内容待补充。
+设随机森林包含 $T$ 棵回归树，则其最终预测结果为
+\begin{equation}
+  \hat{y} = \frac{1}{T}\sum_{t=1}^{T} h_t(\mathbf{x})
+\end{equation}
+其中，$h_t(\mathbf{x})$ 为第 $t$ 棵回归树对输入样本 $\mathbf{x}$ 的预测结果。随机森林模型具有对特征尺度不敏感、鲁棒性较强、训练稳定等优点，适用于处理中小规模样本上的非线性回归问题，但其输出通常表现为分段常值形式，对复杂平滑函数的逼近能力相对有限。
 
-\section{螺旋桨湿模态机器学习预报结果分析}
+\subsection{梯度提升回归模型}
 
-本节内容待补充。
+梯度提升回归模型是 Friedman 提出的提升学习方法\cite{intro:15}，其基本思想是通过逐步叠加若干弱学习器，使模型在每一步都朝着损失函数下降最快的方向优化。与随机森林采用并行集成不同，梯度提升回归采用串行集成，即后续基学习器主要用于拟合前一轮模型残差，因此能够更精细地逼近输入与输出之间的非线性关系。
+
+设训练样本集为
+\begin{equation}
+  \mathcal{D} = \{(\mathbf{x}_i, y_i)\}_{i=1}^{N}
+\end{equation}
+梯度提升回归模型可表示为
+\begin{equation}
+  F_M(\mathbf{x}) = \sum_{m=1}^{M} \gamma_m h_m(\mathbf{x})
+\end{equation}
+其中，$h_m(\mathbf{x})$ 为第 $m$ 个基学习器，$\gamma_m$ 为其对应权重，$M$ 为基学习器总数。
+
+对于回归问题，常用平方损失函数
+\begin{equation}
+  L = \sum_{i=1}^{N} \ell(y_i,\hat{y}_i),
+  \qquad
+  \ell(y_i,\hat{y}_i) = (y_i - \hat{y}_i)^2
+\end{equation}
+在第 $m$ 轮迭代中，模型按负梯度方向更新，可写为
+\begin{equation}
+  F_m(\mathbf{x}) = F_{m-1}(\mathbf{x}) + \eta \gamma_m h_m(\mathbf{x})
+\end{equation}
+其中，$\eta$ 为学习率。学习率越小，模型每次更新幅度越小，训练更加平稳，但通常需要更多弱学习器数目才能达到较好精度。
+
+梯度提升回归模型具有较强的非线性拟合能力，对特征间复杂耦合关系刻画较为充分，且在中等规模结构参数预测问题上往往能取得较高精度。但该类模型超参数较多，对学习率、树深和基学习器数量较为敏感，若参数设置不当也容易发生过拟合。
+
+\subsection{高斯过程回归模型}
+
+高斯过程回归模型是一种基于贝叶斯思想的非参数概率回归方法\cite{intro:17}。该方法将待学习函数视为随机过程，并利用训练样本构造后验分布，因此不仅能够给出预测均值，还可以同时给出预测不确定性，这对工程预测问题中的可信度评估具有重要意义。
+
+高斯过程可写为
+\begin{equation}
+  f(\mathbf{x}) \sim \mathcal{GP}\left(m(\mathbf{x}), k(\mathbf{x}, \mathbf{x}')\right)
+\end{equation}
+其中，$m(\mathbf{x})$ 为均值函数，$k(\mathbf{x}, \mathbf{x}')$ 为协方差函数或核函数。本文主要采用零均值假设，并通过核函数描述样本间相似性。
+
+考虑带噪声观测情形，
+\begin{equation}
+  y = f(\mathbf{x}) + \varepsilon,
+  \qquad
+  \varepsilon \sim \mathcal{N}(0,\sigma_n^2)
+\end{equation}
+则对于测试样本 $\mathbf{x}_*$，其预测均值与预测方差分别为
+\begin{equation}
+  \mu_* = K_*^{\mathrm{T}}\left(K + \sigma_n^2 I\right)^{-1}\mathbf{y}
+\end{equation}
+\begin{equation}
+  \sigma_*^2 = K_{**} - K_*^{\mathrm{T}}\left(K + \sigma_n^2 I\right)^{-1}K_*
+\end{equation}
+其中，$K$ 为训练样本间协方差矩阵，$K_*$ 为训练样本与测试样本间协方差向量，$K_{**}$ 为测试样本自身协方差。
+
+高斯过程回归在小样本和中等规模样本问题上通常具有较高的预测精度，尤其适用于具有平滑变化规律的结构响应回归问题；同时，其不确定性量化能力有助于识别模型外推风险。但随着样本量增加，其训练所需矩阵求逆运算复杂度迅速提升，计算成本也随之增大。
+
+\subsection{前馈神经网络模型}
+
+前馈神经网络模型通过多层非线性映射逐级提取输入特征，是解决复杂回归问题的重要方法。对于螺旋桨模态频率预测而言，输入特征维度较高，且不同径向剖面几何参数之间存在显著耦合关系，前馈神经网络能够通过深层非线性组合学习其潜在映射规律。
+
+设输入向量和输出向量分别为
+\begin{equation}
+  \mathbf{x} = [x_1, x_2, \cdots, x_n]^{\mathrm{T}},
+  \qquad
+  \mathbf{y} = [y_1, y_2, \cdots, y_m]^{\mathrm{T}}
+\end{equation}
+则前馈神经网络可表示为
+\begin{equation}
+  \hat{\mathbf{y}} = f_{\theta}(\mathbf{x})
+\end{equation}
+其中，$\theta$ 为网络参数集合。对第 $l$ 层神经元，线性变换与非线性激活过程分别为
+\begin{equation}
+  \mathbf{z}^{(l)} = W^{(l)}\mathbf{h}^{(l-1)} + \mathbf{b}^{(l)}
+\end{equation}
+\begin{equation}
+  \mathbf{h}^{(l)} = \phi\left(\mathbf{z}^{(l)}\right)
+\end{equation}
+其中，$W^{(l)}$ 和 $\mathbf{b}^{(l)}$ 分别为第 $l$ 层权重矩阵和偏置向量，$\phi(\cdot)$ 为激活函数。
+
+本文采用 SiLU 激活函数，其表达式为
+\begin{equation}
+  \mathrm{SiLU}(x) = x \sigma(x)
+\end{equation}
+\begin{equation}
+  \sigma(x) = \frac{1}{1 + e^{-x}}
+\end{equation}
+SiLU 激活函数兼具平滑性和非线性表达能力，在回归问题中通常具有较好的训练稳定性。
+
+为提高训练效果，需先对输入输出数据进行标准化处理。对输入特征有
+\begin{equation}
+  x_i' = \frac{x_i - \mu_i}{\sigma_i}
+\end{equation}
+对输出结果可在预测后进行逆标准化还原
+\begin{equation}
+  y_j = y_j' \sigma_j + \mu_j
+\end{equation}
+其中，$\mu_i$、$\sigma_i$ 以及 $\mu_j$、$\sigma_j$ 分别为输入和输出样本的均值与标准差。
+
+为增强网络训练稳定性并抑制过拟合，本文在隐藏层中引入 Layer Normalization 和 Dropout。Layer Normalization 表达式为
+\begin{equation}
+  \mathrm{LayerNorm}(\mathbf{h}) =
+  \frac{\mathbf{h} - \mu(\mathbf{h})}
+  {\sqrt{\sigma^2(\mathbf{h}) + \epsilon}}
+\end{equation}
+Dropout 可表示为
+\begin{equation}
+  \tilde{\mathbf{h}} = \mathbf{h} \odot \mathbf{m}
+\end{equation}
+其中，$\odot$ 表示逐元素乘积，$\mathbf{m}$ 为随机掩码向量。
+
+针对多输出回归任务，本文采用均方误差作为损失函数：
+\begin{equation}
+  \mathrm{MSE} = \frac{1}{NM}\sum_{i=1}^{N}\sum_{j=1}^{M}
+  \left(\hat{y}_{ij} - y_{ij}\right)^2
+\end{equation}
+其中，$N$ 为样本数，$M$ 为输出维度。相比树模型和高斯过程模型，前馈神经网络在大样本、多输出、强耦合问题中具有更强的表达能力，但对超参数选择、训练策略和样本规模也提出了更高要求。
+
+\section{螺旋桨干模态机器学习模型训练与预报结果分析}
+
+基于第二章建立的螺旋桨有限元数据库，本文以螺旋桨几何参数为输入，以前 20 阶干模态频率为输出，分别训练随机森林、梯度提升回归、高斯过程回归和前馈神经网络四种模型。建模目标是构建从几何参数到干模态频率的快速映射，为后续湿模态频率修正提供基准频率输入。
+
+\subsection{四种模型训练}
+
+四种模型训练过程中，均采用训练集与测试集划分方式进行评估，并通过超参数搜索提高模型性能。随机森林模型、梯度提升回归模型和高斯过程回归模型使用贝叶斯优化或网格搜索确定关键超参数；多层感知机模型则通过超参数优化确定网络层数、宽度、学习率、批量大小和 Dropout 参数。各模型超参数搜索空间分别如表~\ref{tab:chapter4-rf-search} 至表~\ref{tab:chapter4-mlp-search} 所示。
+
+\begin{table}[htbp]
+  \centering
+  \caption{随机森林模型超参数搜索空间}
+  \label{tab:chapter4-rf-search}
+  \renewcommand{\arraystretch}{1.18}
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cc}
+    \toprule
+    超参数 & 取值 \\
+    \midrule
+    \texttt{n\_estimators} & $\{50, 100, 150, \cdots, 1000\}$，步长为 50 \\
+    \texttt{max\_depth} & $\{\mathrm{None}, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100\}$ \\
+    \texttt{min\_samples\_split} & $\{2, 5, 10, 20, 50\}$ \\
+    \texttt{min\_samples\_leaf} & $\{1, 2, 4, 8, 16\}$ \\
+    \texttt{bootstrap} & $\{\mathrm{True}, \mathrm{False}\}$ \\
+    \bottomrule
+  \end{tabular*}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{梯度提升回归模型超参数搜索空间}
+  \label{tab:chapter4-gbr-search}
+  \renewcommand{\arraystretch}{1.18}
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cc}
+    \toprule
+    超参数 & 取值 \\
+    \midrule
+    \texttt{n\_estimators} & $\{50, 100, 150, \cdots, 1000\}$，步长为 50 \\
+    \texttt{learning\_rate} & $\{0.01, 0.05, 0.1, 0.2, 0.3, 0.5\}$ \\
+    \texttt{max\_depth} & $\{3, 5, 10, 20, 30, 40, 50\}$ \\
+    \texttt{min\_samples\_split} & $\{2, 5, 10, 20, 50\}$ \\
+    \texttt{min\_samples\_leaf} & $\{1, 2, 4, 8, 16\}$ \\
+    \bottomrule
+  \end{tabular*}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{高斯过程回归模型超参数搜索空间}
+  \label{tab:chapter4-gpr-search}
+  \renewcommand{\arraystretch}{1.18}
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cc}
+    \toprule
+    超参数 & 取值/范围 \\
+    \midrule
+    \texttt{length\_scale} & $10^{[-1,2]}$，对数均匀分布 \\
+    \texttt{constant\_value} & $10^{[-1,2]}$，对数均匀分布 \\
+    \texttt{noise\_level} & $10^{[-4,0]}$，对数均匀分布 \\
+    \texttt{alpha} & $10^{[-8,-3]}$，对数均匀分布 \\
+    \texttt{kernel\_choice} &
+    \shortstack{$\{\mathrm{RBF}+\mathrm{White},\ \mathrm{Matern}+\mathrm{White},$ \\ $\mathrm{RBF}\times\mathrm{Matern}+\mathrm{White}\}$} \\
+    \bottomrule
+  \end{tabular*}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{多层感知机模型超参数搜索空间}
+  \label{tab:chapter4-mlp-search}
+  \renewcommand{\arraystretch}{1.18}
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cc}
+    \toprule
+    超参数 & 取值/范围 \\
+    \midrule
+    \texttt{n\_hidden} & $\{2, 4, 6, 8, 10\}$ \\
+    \texttt{n\_neurons} & $[32,128]$，均匀整数分布 \\
+    \texttt{learning\_rate} & $10^{[-4,-1]}$，对数均匀分布 \\
+    \texttt{batch\_size} & $\{4, 8, 16, 32\}$ \\
+    \texttt{dropout} & $10^{[-3,-1]}$，对数均匀分布 \\
+    \bottomrule
+  \end{tabular*}
+\end{table}
+
+\subsection{训练结果分析}
+
+为综合评价四种模型在测试集上的预测性能，本文采用平均绝对误差、均方根误差、决定系数和平均绝对百分比误差作为评价指标，其定义分别为
+\begin{equation}
+  \mathrm{MAE} = \frac{1}{NM}\sum_{i=1}^{N}\sum_{j=1}^{M}
+  \left| \hat{y}_{ij} - y_{ij} \right|
+\end{equation}
+\begin{equation}
+  \mathrm{RMSE} = \sqrt{
+  \frac{1}{NM}\sum_{i=1}^{N}\sum_{j=1}^{M}
+  \left( \hat{y}_{ij} - y_{ij} \right)^2}
+\end{equation}
+\begin{equation}
+  R^2 = 1 -
+  \frac{\sum_{i=1}^{N}\sum_{j=1}^{M}\left( \hat{y}_{ij} - y_{ij} \right)^2}
+  {\sum_{i=1}^{N}\sum_{j=1}^{M}\left( y_{ij} - \bar{y} \right)^2}
+\end{equation}
+\begin{equation}
+  \mathrm{MAPE} = \frac{100\%}{NM}\sum_{i=1}^{N}\sum_{j=1}^{M}
+  \left|\frac{\hat{y}_{ij} - y_{ij}}{y_{ij}}\right|
+\end{equation}
+其中，$\bar{y}$ 为测试集真实值均值。
+
+四种模型在测试集整体上的评价结果如表~\ref{tab:chapter4-overall-metrics} 所示。可以看出，多层感知机模型在四项指标上均取得了最优结果，表现出最强的综合预测能力；高斯过程回归模型次之；梯度提升回归模型同样具有较高精度；随机森林模型的整体精度相对较低。
+
+\begin{table}[htbp]
+  \centering
+  \caption{四种模型在测试集上整体的 MAE、RMSE、$R^2$ 和 MAPE}
+  \label{tab:chapter4-overall-metrics}
+  \renewcommand{\arraystretch}{1.18}
+  \begin{tabular}{c c c c c}
+    \toprule
+    模型 & MAE & RMSE & $R^2$ & MAPE \\
+    \midrule
+    随机森林回归模型 & 18.72089 & 28.47207 & 0.954862 & 7.337664 \\
+    梯度提升回归模型 & 5.957019 & 8.530396 & 0.995948 & 2.162625 \\
+    高斯过程回归模型 & 5.274696 & 7.720837 & 0.996681 & 1.959910 \\
+    多层感知机模型 & 5.133937 & 7.445019 & 0.996914 & 1.889931 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+图~\ref{fig:chapter4-rmse-all} 给出了四种模型在各阶模态处的 RMSE 对比结果。从整体趋势看，随机森林模型在多数阶次上的误差均显著高于其余三种模型，说明其对高维连续几何参数到模态频率之间的平滑映射关系刻画仍有不足。梯度提升回归模型、高斯过程回归模型和多层感知机模型则在各阶模态上均表现出较低误差，其中多层感知机模型在大多数阶次上仍保持较小 RMSE。
+
+\clearpage
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image1.png}
+  \caption{四种模型在各阶模态处 RMSE 比较图}
+  \label{fig:chapter4-rmse-all}
+\end{figure}
+
+为进一步比较精度较高的三种模型，图~\ref{fig:chapter4-mae-three} 至图~\ref{fig:chapter4-mape-three} 分别给出了梯度提升回归模型、高斯过程回归模型和多层感知机模型在各阶模态处的 MAE、RMSE、$R^2$ 和 MAPE。结果表明，三种模型在低阶与中阶模态上的预测精度均较高，但随着阶次升高，部分模态由于频率分布更密集、样本映射更复杂，误差会出现一定波动。在这种情况下，多层感知机模型仍表现出较好的稳定性，说明其在处理多输出强非线性耦合问题时具有优势。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image2.png}
+  \caption{三种模型在各阶模态处 MAE 比较图}
+  \label{fig:chapter4-mae-three}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image3.png}
+  \caption{三种模型在各阶模态处 RMSE 比较图}
+  \label{fig:chapter4-rmse-three}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image4.png}
+  \caption{三种模型在各阶模态处 $R^2$ 比较图}
+  \label{fig:chapter4-r2-three}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image5.png}
+  \caption{三种模型在各阶模态处 MAPE 比较图}
+  \label{fig:chapter4-mape-three}
+\end{figure}
+
+\clearpage
+
+综合表~\ref{tab:chapter4-overall-metrics} 以及图~\ref{fig:chapter4-rmse-all} 至图~\ref{fig:chapter4-mape-three} 的结果，可以认为多层感知机模型在本文螺旋桨干模态频率预测问题上具有最佳综合性能。一方面，前馈神经网络通过多层非线性映射能够充分学习几何特征之间的复杂耦合；另一方面，本文采用的标准化、Layer Normalization 和 Dropout 等策略有效提高了模型训练稳定性并抑制了过拟合。
+
+为直观展示优选模型的预测效果，图~\ref{fig:chapter4-mlp-example} 给出了 DTMB440 螺旋桨在多层感知机模型下的预测结果与仿真结果对比。可以看出，预测曲线与仿真曲线整体吻合良好，说明该模型能够较准确地捕捉螺旋桨前 20 阶干模态频率的变化规律。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image6.png}
+  \caption{DTMB440 螺旋桨 MLP 预测结果与仿真结果对比图}
+  \label{fig:chapter4-mlp-example}
+\end{figure}
+
+\section{螺旋桨湿模态频率预测流程}
+
+在获得干模态频率高精度预测模型后，可进一步结合第三章试验分析和第二章流固耦合仿真中得到的附连水频率修正规律，建立螺旋桨湿模态频率快速预报流程。其核心思想是先由机器学习模型预测干模态频率，再利用相应阶次的湿模态修正系数对其进行修正，最终得到湿模态频率。
+
+本文取螺旋桨桨径 $D$、叶数 $Z$ 以及 11 个典型径向截面处的弦长和最大厚度作为输入参数，构造几何特征向量
+\begin{equation}
+  \mathbf{x} =
+  [D,\ Z,\ c_{0.20},\ t_{0.20},\ c_{0.25},\ t_{0.25},\ c_{0.30},\ t_{0.30},\ \cdots,\ c_{1.00},\ t_{1.00}]^{\mathrm{T}}
+\end{equation}
+其中，$c_r$ 和 $t_r$ 分别表示径向位置 $r$ 处的弦长和厚度参数。经训练后的多层感知机模型可输出前 20 阶干模态频率预测值：
+\begin{equation}
+  \hat{\mathbf{f}}_d = f_{\mathrm{MLP}}(\mathbf{x})
+\end{equation}
+\begin{equation}
+  \hat{\mathbf{f}}_d =
+  [\hat{f}_{d,1},\ \hat{f}_{d,2},\ \cdots,\ \hat{f}_{d,20}]^{\mathrm{T}}
+\end{equation}
+
+根据第二章和第三章的研究结果，湿模态频率与干模态频率之间可通过分阶次频率修正系数建立联系。定义第 $r$ 阶模态的修正系数为
+\begin{equation}
+  \lambda_r = \frac{f_{w,r}}{f_{d,r}},
+  \qquad 0 < \lambda_r < 1
+\end{equation}
+其中，$f_{w,r}$ 和 $f_{d,r}$ 分别表示第 $r$ 阶湿模态频率和干模态频率。则对应的湿模态预测值可表示为
+\begin{equation}
+  \hat{f}_{w,r} = \lambda_r \hat{f}_{d,r}
+\end{equation}
+
+对于工程应用，可根据螺旋桨叶数、典型振型类别和已有仿真/试验标定结果预先建立修正系数库；当输入新螺旋桨几何参数后，首先由 MLP 模型快速输出前 20 阶干模态频率，再调用对应修正系数完成湿模态预报。该流程避免了对每一个新样本重复开展完整流固耦合分析，大幅提高了预测效率。
 
 \section{本章小结}
 
-本节内容待补充。
+本章围绕螺旋桨湿模态频率机器学习预测方法开展研究。首先，从基本原理出发，介绍了随机森林、梯度提升回归、高斯过程回归和前馈神经网络四类常用回归模型，并分析了各自的建模特点与适用性。
+
+随后，基于第二章建立的干模态仿真数据库，对四种模型进行了训练与测试，并通过 MAE、RMSE、$R^2$ 和 MAPE 等指标对预测性能进行了系统比较。结果表明，多层感知机模型在整体精度和各阶模态稳定性方面均表现最佳，能够较准确地预测螺旋桨前 20 阶干模态频率。
+
+最后，在优选干模态预测模型基础上，结合第二章和第三章获得的湿模态频率修正规律，建立了螺旋桨湿模态频率快速预报流程。该方法可先由机器学习模型给出干模态频率，再利用分阶次修正系数得到湿模态频率，从而为后续螺旋桨模态快速评估提供高效的数据驱动工具。

@@ -59,6 +59,9 @@
   }
 }
 \whumodule{algorithm2e}
+\ExplSyntaxOn
+\cs_set_protected:Npn \__whu_bachelor_copyright: {}
+\ExplSyntaxOff
 \begin{document}
 % \raggedbottom % 使得空白都置于每一页底部，可参�?https://github.com/whutug/whu-thesis/issues/276
 
@@ -83,7 +86,7 @@
 
 % 参考文�?
 % \nocite{*}
-\nocite{intro:1,intro:2,intro:3,intro:4,intro:5,intro:6,intro:7,intro:8,intro:9,intro:10,intro:11,intro:12,intro:13,intro:14,intro:15,intro:16,intro:17,intro:18,intro:19}
+\nocite{intro:1,intro:2,intro:3,intro:4,intro:5,intro:6,intro:7,intro:8,intro:9,intro:10,intro:11,intro:12,intro:13,intro:14,intro:15,intro:16,intro:17,intro:18,intro:19,sim:20,sim:21}
 \printbibliography
 
 % 发表的与学位论文相关的科研成果目�?
@@ -95,8 +98,4 @@
 \end{acknowledgements}
 
 % 附录
-\appendix
-
-\include{pages/appendix.tex}
-
 \end{document}
