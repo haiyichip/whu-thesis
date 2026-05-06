@@ -8,7 +8,7 @@
 
 \section{模态分析理论基础}
 
-真实螺旋桨叶片具有变弦长、变厚度、变螺距和空间扭曲等复杂几何特征，其振动形式包括弯曲、扭转、弯扭耦合以及高阶局部振动等多种类型，难以直接通过简单解析方法获得精确解。为了说明模态频率和模态阶次的数学本质，可先将螺旋桨叶片近似看作一端固支、一端自由的悬臂梁。对于理想等截面 Euler-Bernoulli 梁，其横向自由弯曲振动控制方程可表示为
+真实螺旋桨叶片具有变弦长、变厚度、变螺距和空间扭曲等复杂几何特征，其振动形式包括弯曲、扭转、弯扭耦合以及高阶局部振动等多种类型，难以直接通过简单解析方法获得精确解。为了说明模态频率和模态阶次的数学本质，可先将螺旋桨叶片近似看作一端固支、一端自由的悬臂梁\cite{chap2:6}。对于理想等截面 Euler-Bernoulli 梁，其横向自由弯曲振动控制方程可表示为
 \begin{equation}
   EI\frac{\partial^4 u(x,t)}{\partial x^4}+\rho A\frac{\partial^2 u(x,t)}{\partial t^2}=0
 \end{equation}
@@ -99,7 +99,7 @@
 
 \section{有限元分析求解螺旋桨干模态理论基础}
 
-真实螺旋桨具有变弦长、变厚度、变螺距和空间扭曲等复杂三维特征，难以用解析方法准确求解固有频率和振型。因此，需采用有限元法将其离散为单元和节点，通过组装质量矩阵和刚度矩阵计算干模态频率。
+真实螺旋桨具有变弦长、变厚度、变螺距和空间扭曲等复杂三维特征，难以用解析方法准确求解固有频率和振型。因此，需采用有限元法将其离散为单元和节点，通过组装质量矩阵和刚度矩阵计算干模态频率\cite{chap2:6}。
 
 首先，将螺旋桨几何结构划分为若干有限单元，每个单元通过节点连接。单元内部任意点的位移可由节点位移通过形函数插值得到，即
 \begin{equation}
@@ -166,54 +166,43 @@
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.62\textwidth]{figures/chapter2/from_word/image1.png}
+  \includegraphics[width=0.40\textwidth]{figures/chapter2/from_word/image1.png}
   \caption{DTMB4382 五叶桨体网格}
   \label{fig:dtmb4382-solid-mesh}
 \end{figure}
 
-划分体网格之后，将模型导入 Abaqus 中设置网格的材料属性，并进行仿真，从而得到各阶模态频率与振型。表~\ref{tab:dtmb4382-dry-modes} 给出该螺旋桨的一阶同相弯曲、一阶弯扭耦合和一阶同向扭转振型对应的阶次与模态频率，图~\ref{fig:dtmb4382-mode-shapes} 给出相应的仿真振型云图。
+划分体网格之后，将模型导入 Abaqus 中设置网格的材料属性，并进行仿真，从而得到各阶模态频率与振型。表~\ref{tab:dtmb4382-dry-modes} 给出了该螺旋桨的一阶同相弯曲、一阶弯扭耦合和一阶同向扭转振型对应的阶次、模态频率及相应仿真振型。
 
 \begin{table}[htbp]
   \centering
   \caption{DTMB4382 五叶桨仿真结果}
   \label{tab:dtmb4382-dry-modes}
-  \small
-  \begin{tabular}{ccc}
-    \toprule
-    阶次 & 振型 & 模态频率/Hz \\
-    \midrule
-    5  & 一阶同相弯曲 & 92.27  \\
-    8  & 一阶弯扭耦合 & 165.22 \\
-    10 & 一阶同向扭转 & 172.21 \\
-    \bottomrule
-  \end{tabular}
+  \renewcommand{\arraystretch}{1.15}
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.4cm}|>{\centering\arraybackslash}m{2.5cm}|>{\centering\arraybackslash}m{5.1cm}|}
+      \hline
+      阶次 & 振型 & 模态频率/Hz & 仿真振型图 \\
+      \hline
+      \parbox[c][3.3cm][c]{1cm}{\centering 5} &
+      \parbox[c][3.3cm][c]{2.4cm}{\centering 一阶同相弯曲} &
+      \parbox[c][3.3cm][c]{2.5cm}{\centering 92.27} &
+      \parbox[c][3.3cm][c]{5.1cm}{\centering\includegraphics[width=4.5cm]{figures/chapter2/from_word/image2.png}} \\
+      \hline
+      \parbox[c][3.3cm][c]{1cm}{\centering 8} &
+      \parbox[c][3.3cm][c]{2.4cm}{\centering 一阶弯扭耦合} &
+      \parbox[c][3.3cm][c]{2.5cm}{\centering 165.22} &
+      \parbox[c][3.3cm][c]{5.1cm}{\centering\includegraphics[width=4.5cm]{figures/chapter2/from_word/image3.png}} \\
+      \hline
+      \parbox[c][3.3cm][c]{1cm}{\centering 10} &
+      \parbox[c][3.3cm][c]{2.4cm}{\centering 一阶同向扭转} &
+      \parbox[c][3.3cm][c]{2.5cm}{\centering 172.21} &
+      \parbox[c][3.3cm][c]{5.1cm}{\centering\includegraphics[width=4.5cm]{figures/chapter2/from_word/image4.png}} \\
+      \hline
+    \end{tabular}
+  }
 \end{table}
 
-\begin{figure}[htbp]
-  \centering
-  \begin{minipage}[b]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/chapter2/from_word/image2.png}
-
-    一阶同相弯曲
-  \end{minipage}
-  \begin{minipage}[b]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/chapter2/from_word/image3.png}
-
-    一阶弯扭耦合
-  \end{minipage}
-  \begin{minipage}[b]{0.32\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/chapter2/from_word/image4.png}
-
-    一阶同向扭转
-  \end{minipage}
-  \caption{DTMB4382 五叶桨典型振型云图}
-  \label{fig:dtmb4382-mode-shapes}
-\end{figure}
-
-本节主要从几何离散方法和材料参数性质两个方面建立螺旋桨干模态有限元仿真计算规程。其中，几何离散方法重点讨论网格类型、网格尺寸及网格收敛性对模态频率的影响，并通过典型螺旋桨模型确定合理的网格划分参数；材料参数性质重点分析密度、弹性模量、泊松比和阻尼等参数对模态频率及动力响应特征的影响规律，为后续有限元模型参数修正提供依据。
+下面，本节主要从几何离散方法和材料参数性质两个方面建立螺旋桨干模态有限元仿真计算规程。其中，几何离散方法重点讨论网格类型、网格尺寸及网格收敛性对模态频率的影响，并通过典型螺旋桨模型确定合理的网格划分参数；材料参数性质重点分析密度、弹性模量、泊松比和阻尼等参数对模态频率及动力响应特征的影响规律，为后续有限元模型参数修正提供依据。
 
 \subsection{几何离散方法研究}
 
