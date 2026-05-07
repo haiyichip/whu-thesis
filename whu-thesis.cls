@@ -1949,6 +1949,7 @@
       \chapter* { \c__whu_name_abstract_tl }
       \addcontentsline{toc}{chapter}{摘要}
       \zihao{-4}
+      \setlength{\parskip}{0pt}
       \file_if_exist:nT { pages/abstract.tex }
         {
           \file_input:n { pages/abstract.tex }
@@ -1975,6 +1976,7 @@
         }
       \chapter{ \c__whu_name_abstract_en_tl }
       \zihao{-4}
+      \setlength{\parskip}{0pt}
       % \g__whu_abstract_en_content_tl
       \file_if_exist:nT { pages/enabstract.tex }
         {
@@ -2019,6 +2021,7 @@
         }
       \chapter{ \c__whu_name_abstract_tl }
       \zihao{-4}
+      \setlength{\parskip}{0pt}
       \file_if_exist:nT { pages/abstract.tex }
         {
           \file_input:n { pages/abstract.tex }
@@ -2043,6 +2046,7 @@
         }
       \chapter{ \c__whu_name_abstract_en_tl }
       \zihao{-4}
+      \setlength{\parskip}{0pt}
       % \g__whu_abstract_en_content_tl
       \file_if_exist:nT { pages/enabstract.tex }
         {
@@ -2069,6 +2073,7 @@
         }
       \chapter{ \c__whu_name_abstract_tl }
       \zihao{-4}
+      \setlength{\parskip}{0pt}
       \file_if_exist:nT { pages/abstract.tex }
         {
           \file_input:n { pages/abstract.tex }
@@ -2093,6 +2098,7 @@
         }
       \chapter{ \c__whu_name_abstract_en_tl }
       \zihao{-4}
+      \setlength{\parskip}{0pt}
       \file_if_exist:nT { pages/enabstract.tex }
         {
           \file_input:n { pages/enabstract.tex }
