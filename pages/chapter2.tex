@@ -179,25 +179,23 @@
   \label{tab:dtmb4382-dry-modes}
   \renewcommand{\arraystretch}{1.15}
   \resizebox{\textwidth}{!}{
-    \begin{tabular}{|>{\centering\arraybackslash}m{1cm}|>{\centering\arraybackslash}m{2.4cm}|>{\centering\arraybackslash}m{2.5cm}|>{\centering\arraybackslash}m{5.1cm}|}
-      \hline
+    \begin{tabular}{>{\centering\arraybackslash}m{1cm}>{\centering\arraybackslash}m{2.4cm}>{\centering\arraybackslash}m{2.5cm}>{\centering\arraybackslash}m{5.1cm}}
+      \toprule
       阶次 & 振型 & 模态频率/Hz & 仿真振型图 \\
-      \hline
+      \midrule
       \parbox[c][3.3cm][c]{1cm}{\centering 5} &
       \parbox[c][3.3cm][c]{2.4cm}{\centering 一阶同相弯曲} &
       \parbox[c][3.3cm][c]{2.5cm}{\centering 92.27} &
       \parbox[c][3.3cm][c]{5.1cm}{\centering\includegraphics[width=4.5cm]{figures/chapter2/from_word/image2.png}} \\
-      \hline
       \parbox[c][3.3cm][c]{1cm}{\centering 8} &
       \parbox[c][3.3cm][c]{2.4cm}{\centering 一阶弯扭耦合} &
       \parbox[c][3.3cm][c]{2.5cm}{\centering 165.22} &
       \parbox[c][3.3cm][c]{5.1cm}{\centering\includegraphics[width=4.5cm]{figures/chapter2/from_word/image3.png}} \\
-      \hline
       \parbox[c][3.3cm][c]{1cm}{\centering 10} &
       \parbox[c][3.3cm][c]{2.4cm}{\centering 一阶同向扭转} &
       \parbox[c][3.3cm][c]{2.5cm}{\centering 172.21} &
       \parbox[c][3.3cm][c]{5.1cm}{\centering\includegraphics[width=4.5cm]{figures/chapter2/from_word/image4.png}} \\
-      \hline
+      \bottomrule
     \end{tabular}
   }
 \end{table}
@@ -212,13 +210,82 @@
 
 下面进行网格收敛性分析。以典型 DTMB4832 五叶螺旋桨为研究对象，其主要几何参数为：直径 $D=2\,\mathrm{m}$，毂径比 $D_{hub}/D=0.21$，桨叶数 $Z=5$。采用 HyperMesh 对该螺旋桨模型进行结构网格划分，单元类型统一采用 C3D8R，仅改变全局网格尺寸。全局网格尺寸分别设置为 12 mm、11 mm、10 mm、9 mm、8 mm 和 7 mm，使用 Abaqus 分别求解干模态频率，对比其一阶不同向弯曲、一阶对侧反向弯曲和一阶同向弯曲三种典型振型对应的模态频率，得到的结果如表~\ref{tab:grid-convergence} 所示。
 
+% % 表 2.2：可单独调整每一列列宽、每一行行高
+% \providecommand{\adjustablecell}[3]{\parbox[c][#1][c]{#2}{\centering #3}}
+% \def\gridonecolA{3.0cm}
+% \def\gridonecolB{3.3cm}
+% \def\gridonecolC{3.6cm}
+% \def\gridonecolD{3.3cm}
+% \def\gridoneheadheight{0.8cm}
+% \def\gridonerowA{0.6cm}
+% \def\gridonerowB{0.6cm}
+% \def\gridonerowC{0.6cm}
+% \def\gridonerowD{0.6cm}
+% \def\gridonerowE{0.6cm}
+% \def\gridonerowF{0.6cm}
+% \begin{table}[htbp]
+%   \centering
+%   \caption{DTMB4832 各网格尺寸下的仿真结果}
+%   \label{tab:grid-convergence1}
+%   \setlength{\tabcolsep}{3pt}
+%   \renewcommand{\arraystretch}{1}
+%     \begin{tabular}{>{\centering\arraybackslash}m{\gridonecolA}>{\centering\arraybackslash}m{\gridonecolB}>{\centering\arraybackslash}m{\gridonecolC}>{\centering\arraybackslash}m{\gridonecolD}}
+%       \toprule
+%       \adjustablecell{\gridoneheadheight}{\gridonecolA}{网格尺寸/mm} &
+%       \adjustablecell{\gridoneheadheight}{\gridonecolB}{一阶不同向弯曲/Hz} &
+%       \adjustablecell{\gridoneheadheight}{\gridonecolC}{一阶对侧反向弯曲/Hz} &
+%       \adjustablecell{\gridoneheadheight}{\gridonecolD}{一阶同向弯曲/Hz} \\
+%       \midrule
+%       \adjustablecell{\gridonerowA}{\gridonecolA}{12} & \adjustablecell{\gridonerowA}{\gridonecolB}{94.394} & \adjustablecell{\gridonerowA}{\gridonecolC}{102.792} & \adjustablecell{\gridonerowA}{\gridonecolD}{103.954} \\
+%       \adjustablecell{\gridonerowB}{\gridonecolA}{11} & \adjustablecell{\gridonerowB}{\gridonecolB}{93.329} & \adjustablecell{\gridonerowB}{\gridonecolC}{101.580} & \adjustablecell{\gridonerowB}{\gridonecolD}{102.770} \\
+%       \adjustablecell{\gridonerowC}{\gridonecolA}{10} & \adjustablecell{\gridonerowC}{\gridonecolB}{92.490} & \adjustablecell{\gridonerowC}{\gridonecolC}{100.650} & \adjustablecell{\gridonerowC}{\gridonecolD}{101.790} \\
+%       \adjustablecell{\gridonerowD}{\gridonecolA}{9}  & \adjustablecell{\gridonerowD}{\gridonecolB}{91.653} & \adjustablecell{\gridonerowD}{\gridonecolC}{99.742}  & \adjustablecell{\gridonerowD}{\gridonecolD}{100.794} \\
+%       \adjustablecell{\gridonerowE}{\gridonecolA}{8}  & \adjustablecell{\gridonerowE}{\gridonecolB}{90.859} & \adjustablecell{\gridonerowE}{\gridonecolC}{98.843}  & \adjustablecell{\gridonerowE}{\gridonecolD}{99.690}  \\
+%       \adjustablecell{\gridonerowF}{\gridonecolA}{7}  & \adjustablecell{\gridonerowF}{\gridonecolB}{90.165} & \adjustablecell{\gridonerowF}{\gridonecolC}{98.136}  & \adjustablecell{\gridonerowF}{\gridonecolD}{98.710}  \\
+%       \bottomrule
+%     \end{tabular}
+% \end{table}
+
+% % 表 2.3：可单独调整每一列列宽、每一行行高
+% \def\gridtwocolA{3.0cm}
+% \def\gridtwocolB{3.5cm}
+% \def\gridtwocolC{3.7cm}
+% \def\gridtwocolD{3.5cm}
+% \def\gridtwoheadheight{0.8cm}
+% \def\gridtworowA{0.6cm}
+% \def\gridtworowB{0.6cm}
+% \def\gridtworowC{0.6cm}
+% \def\gridtworowD{0.6cm}
+% \def\gridtworowE{0.6cm}
+% \begin{table}[htbp]
+%   \centering
+%   \caption{DTMB4832 各网格尺寸相较于上一级尺寸仿真结果的相对变化量}
+%   \label{tab:grid-convergence2}
+%   \setlength{\tabcolsep}{3pt}
+%   \renewcommand{\arraystretch}{1}
+%     \begin{tabular}{>{\centering\arraybackslash}m{\gridtwocolA}>{\centering\arraybackslash}m{\gridtwocolB}>{\centering\arraybackslash}m{\gridtwocolC}>{\centering\arraybackslash}m{\gridtwocolD}}
+%       \toprule
+%       \adjustablecell{\gridtwoheadheight}{\gridtwocolA}{网格尺寸/mm} &
+%       \adjustablecell{\gridtwoheadheight}{\gridtwocolB}{一阶不同向弯曲变化量(\%)} &
+%       \adjustablecell{\gridtwoheadheight}{\gridtwocolC}{一阶对侧反向弯曲变化量(\%)} &
+%       \adjustablecell{\gridtwoheadheight}{\gridtwocolD}{一阶同向弯曲变化量(\%)} \\
+%       \midrule
+%       \adjustablecell{\gridtworowA}{\gridtwocolA}{11} & \adjustablecell{\gridtworowA}{\gridtwocolB}{1.13} & \adjustablecell{\gridtworowA}{\gridtwocolC}{1.18} & \adjustablecell{\gridtworowA}{\gridtwocolD}{1.14} \\
+%       \adjustablecell{\gridtworowB}{\gridtwocolA}{10} & \adjustablecell{\gridtworowB}{\gridtwocolB}{0.90} & \adjustablecell{\gridtworowB}{\gridtwocolC}{0.92} & \adjustablecell{\gridtworowB}{\gridtwocolD}{0.95} \\
+%       \adjustablecell{\gridtworowC}{\gridtwocolA}{9}  & \adjustablecell{\gridtworowC}{\gridtwocolB}{0.90} & \adjustablecell{\gridtworowC}{\gridtwocolC}{0.90} & \adjustablecell{\gridtworowC}{\gridtwocolD}{0.98} \\
+%       \adjustablecell{\gridtworowD}{\gridtwocolA}{8}  & \adjustablecell{\gridtworowD}{\gridtwocolB}{0.87} & \adjustablecell{\gridtworowD}{\gridtwocolC}{0.90} & \adjustablecell{\gridtworowD}{\gridtwocolD}{1.10} \\
+%       \adjustablecell{\gridtworowE}{\gridtwocolA}{7}  & \adjustablecell{\gridtworowE}{\gridtwocolB}{0.76} & \adjustablecell{\gridtworowE}{\gridtwocolC}{0.72} & \adjustablecell{\gridtworowE}{\gridtwocolD}{0.98} \\
+%       \bottomrule
+%     \end{tabular}
+% \end{table}
+
 \begin{table}[htbp]
   \centering
   \caption{DTMB4832 网格收敛性验证结果}
   \label{tab:grid-convergence}
-  \small
-  \resizebox{\textwidth}{!}{
-    \begin{tabular}{ccccccc}
+\renewcommand{\arraystretch}{1.15}
+  \setlength{\tabcolsep}{1pt}
+    \begin{tabular}{>{\centering\arraybackslash}m{1.4cm}>{\centering\arraybackslash}m{1.8cm}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{1.8cm}>{\centering\arraybackslash}m{2.4cm}>{\centering\arraybackslash}m{2.5cm}>{\centering\arraybackslash}m{2.4cm}}
       \toprule
       网格尺寸/mm & 一阶不同向弯曲/Hz & 一阶对侧反向弯曲/Hz & 一阶同向弯曲/Hz & 一阶不同向弯曲下降量(\%) & 一阶对侧反向弯曲下降量(\%) & 一阶同向弯曲下降量(\%) \\
       \midrule
@@ -230,7 +297,6 @@
       7  & 90.165 & 98.136  & 98.710  & 0.76 & 0.72 & 0.98 \\
       \bottomrule
     \end{tabular}
-  }
 \end{table}
 
 由表~\ref{tab:grid-convergence} 可知，随着全局网格尺寸由 12 mm 减小至 7 mm，三种典型振型频率整体下降并逐渐稳定。当网格尺寸由 12 mm 减小至 11 mm 时，频率下降量均大于 1\%；当细化至 10 mm 及以下时，频率变化基本小于 1\%，说明模态结果已趋于收敛。综合考虑模态频率收敛性、计算精度、现实计算效率以及计算资源限制，本文最终选取 10 mm 作为 DTMB4832 五叶桨干模态分析的全局网格尺寸。
@@ -245,11 +311,14 @@
 
 弹性模量是决定结构刚度特性的关键材料参数。随着弹性模量的增大，结构整体刚度提高，各阶模态频率呈现整体上升趋势。基于前述简单理论关系，开展弹性模量对结构模态的影响分析，以验证螺旋桨结构模态频率随弹性模量变化的基本规律。调整弹性模量后，结构模态频率结果如表~\ref{tab:elastic-modulus} 所示，变化趋势如图~\ref{fig:elastic-modulus-analysis} 所示。模型密度设置为 $7500\,\mathrm{kg/m^3}$，泊松比设置为 0.33。结果表明，各振型对应的模态频率随弹性模量变化均表现出较为明显的近线性关系，且随着弹性模量的增大，模态频率整体呈上升趋势。
 
+% 调整下面的倍率即可整体控制表 2.3 大小
+\def\elasticmodulusscale{0.8}
 \begin{table}[htbp]
   \centering
   \caption{弹性模量影响分析}
   \label{tab:elastic-modulus}
   \small
+  \scalebox{\elasticmodulusscale}{
   \begin{tabular}{ccccc}
     \toprule
     弹性模量(GPa) & 127 & 114.3 & 102.87 & 测试 \\
@@ -260,8 +329,8 @@
     与测试结果相比最大误差       & 11.8\% & 6.2\%  & 0.67\% & -      \\
     \bottomrule
   \end{tabular}
+  }
 \end{table}
-
 
 \begin{figure}[htbp]
   \centering
@@ -270,13 +339,16 @@
   \label{fig:elastic-modulus-analysis}
 \end{figure}
 
-泊松比的影响相对次要，但在特定情况下不可忽视。对于实体结构，泊松比会影响结构的体积模量和某些复杂振型。对于细长梁或薄板结构，泊松比的影响通常较小；但对于厚壳或三维实体，它会影响高频模态的分布。对于以弯扭响应为主的螺旋桨结构，泊松比对模态频率的影响极小。下面开展泊松比对结构模态的影响分析，以验证螺旋桨结构模态频率随泊松比变化的基本规律。调整泊松比后，结构模态频率结果如表~\ref{tab:poisson-ratio} 所示。模型密度设置为 $7500\,\mathrm{kg/m^3}$，杨氏模量设置为 102.87 GPa。结果表明，各振型对应的模态频率随泊松比变化均表现出较为明显的近线性关系，且随着泊松比的增大，模态频率整体呈上升趋势。
+泊松比的影响相对次要，但在特定情况下不可忽视。对于实体结构，泊松比会影响结构的体积模量和某些复杂振型。但对于以弯扭响应为主的螺旋桨结构，泊松比对模态频率的影响极小。下面开展泊松比对结构模态的影响分析，以验证螺旋桨结构模态频率随泊松比变化的基本规律。调整泊松比后，结构模态频率结果如表~\ref{tab:poisson-ratio} 所示。模型密度设置为 $7500\,\mathrm{kg/m^3}$，杨氏模量设置为 102.87 GPa。结果表明，各振型对应的模态频率随泊松比变化均表现出较为明显的近线性关系，且随着泊松比的增大，模态频率整体呈上升趋势。
 
+% 调整下面的倍率即可整体控制表 2.4 大小
+\def\poissonratioscale{0.8}
 \begin{table}[htbp]
   \centering
   \caption{泊松比影响分析}
   \label{tab:poisson-ratio}
   \small
+  \scalebox{\poissonratioscale}{
   \begin{tabular}{ccccc}
     \toprule
     泊松比 & 0.27 & 0.30 & 0.33 & 测试 \\
@@ -287,6 +359,7 @@
     与测试结果相比最大误差       & 1.1\%  & 0.39\% & 0.67\% & -      \\
     \bottomrule
   \end{tabular}
+  }
 \end{table}
 
 \begin{figure}[htbp]
