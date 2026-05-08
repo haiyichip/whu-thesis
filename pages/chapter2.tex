@@ -279,24 +279,91 @@
 %     \end{tabular}
 % \end{table}
 
+% 第二章表格通用定宽定高单元格宏
+\providecommand{\chaptertwotablecell}[3]{\parbox[c][#1][c]{#2}{\centering #3}}
+
+% 表 2.2：可调各行行高
+\newlength{\gridconvergencecolA}
+\newlength{\gridconvergencecolB}
+\newlength{\gridconvergencecolC}
+\newlength{\gridconvergencecolD}
+\newlength{\gridconvergencecolE}
+\newlength{\gridconvergencecolF}
+\newlength{\gridconvergencecolG}
+\setlength{\gridconvergencecolA}{1.4cm}
+\setlength{\gridconvergencecolB}{1.8cm}
+\setlength{\gridconvergencecolC}{2.2cm}
+\setlength{\gridconvergencecolD}{1.8cm}
+\setlength{\gridconvergencecolE}{2.4cm}
+\setlength{\gridconvergencecolF}{2.5cm}
+\setlength{\gridconvergencecolG}{2.4cm}
+\def\gridconvergenceheadheight{1.4cm}
+\def\gridconvergencerowA{0.5cm}
+\def\gridconvergencerowB{0.5cm}
+\def\gridconvergencerowC{0.5cm}
+\def\gridconvergencerowD{0.5cm}
+\def\gridconvergencerowE{0.5cm}
+\def\gridconvergencerowF{0.5cm}
 \begin{table}[htbp]
   \centering
   \caption{DTMB4832 网格收敛性验证结果}
   \label{tab:grid-convergence}
-\renewcommand{\arraystretch}{1.15}
+  \renewcommand{\arraystretch}{1}
   \setlength{\tabcolsep}{1pt}
-    \begin{tabular}{>{\centering\arraybackslash}m{1.4cm}>{\centering\arraybackslash}m{1.8cm}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{1.8cm}>{\centering\arraybackslash}m{2.4cm}>{\centering\arraybackslash}m{2.5cm}>{\centering\arraybackslash}m{2.4cm}}
-      \toprule
-      网格尺寸/mm & 一阶不同向弯曲/Hz & 一阶对侧反向弯曲/Hz & 一阶同向弯曲/Hz & 一阶不同向弯曲下降量(\%) & 一阶对侧反向弯曲下降量(\%) & 一阶同向弯曲下降量(\%) \\
-      \midrule
-      12 & 94.394 & 102.792 & 103.954 & -    & -    & -    \\
-      11 & 93.329 & 101.580 & 102.770 & 1.13 & 1.18 & 1.14 \\
-      10 & 92.490 & 100.650 & 101.790 & 0.90 & 0.92 & 0.95 \\
-      9  & 91.653 & 99.742  & 100.794 & 0.90 & 0.90 & 0.98 \\
-      8  & 90.859 & 98.843  & 99.690  & 0.87 & 0.90 & 1.10 \\
-      7  & 90.165 & 98.136  & 98.710  & 0.76 & 0.72 & 0.98 \\
-      \bottomrule
-    \end{tabular}
+  \begin{tabular}{ccccccc}
+    \toprule
+    \chaptertwotablecell{\gridconvergenceheadheight}{\gridconvergencecolA}{网格尺寸/mm} &
+    \chaptertwotablecell{\gridconvergenceheadheight}{\gridconvergencecolB}{一阶不同向弯曲/Hz} &
+    \chaptertwotablecell{\gridconvergenceheadheight}{\gridconvergencecolC}{一阶对侧反向弯曲/Hz} &
+    \chaptertwotablecell{\gridconvergenceheadheight}{\gridconvergencecolD}{一阶同向弯曲/Hz} &
+    \chaptertwotablecell{\gridconvergenceheadheight}{\gridconvergencecolE}{一阶不同向弯曲下降量(\%)} &
+    \chaptertwotablecell{\gridconvergenceheadheight}{\gridconvergencecolF}{一阶对侧反向弯曲下降量(\%)} &
+    \chaptertwotablecell{\gridconvergenceheadheight}{\gridconvergencecolG}{一阶同向弯曲下降量(\%)} \\
+    \midrule
+    \chaptertwotablecell{\gridconvergencerowA}{\gridconvergencecolA}{12} &
+    \chaptertwotablecell{\gridconvergencerowA}{\gridconvergencecolB}{94.394} &
+    \chaptertwotablecell{\gridconvergencerowA}{\gridconvergencecolC}{102.792} &
+    \chaptertwotablecell{\gridconvergencerowA}{\gridconvergencecolD}{103.954} &
+    \chaptertwotablecell{\gridconvergencerowA}{\gridconvergencecolE}{-} &
+    \chaptertwotablecell{\gridconvergencerowA}{\gridconvergencecolF}{-} &
+    \chaptertwotablecell{\gridconvergencerowA}{\gridconvergencecolG}{-} \\
+    \chaptertwotablecell{\gridconvergencerowB}{\gridconvergencecolA}{11} &
+    \chaptertwotablecell{\gridconvergencerowB}{\gridconvergencecolB}{93.329} &
+    \chaptertwotablecell{\gridconvergencerowB}{\gridconvergencecolC}{101.580} &
+    \chaptertwotablecell{\gridconvergencerowB}{\gridconvergencecolD}{102.770} &
+    \chaptertwotablecell{\gridconvergencerowB}{\gridconvergencecolE}{1.13} &
+    \chaptertwotablecell{\gridconvergencerowB}{\gridconvergencecolF}{1.18} &
+    \chaptertwotablecell{\gridconvergencerowB}{\gridconvergencecolG}{1.14} \\
+    \chaptertwotablecell{\gridconvergencerowC}{\gridconvergencecolA}{10} &
+    \chaptertwotablecell{\gridconvergencerowC}{\gridconvergencecolB}{92.490} &
+    \chaptertwotablecell{\gridconvergencerowC}{\gridconvergencecolC}{100.650} &
+    \chaptertwotablecell{\gridconvergencerowC}{\gridconvergencecolD}{101.790} &
+    \chaptertwotablecell{\gridconvergencerowC}{\gridconvergencecolE}{0.90} &
+    \chaptertwotablecell{\gridconvergencerowC}{\gridconvergencecolF}{0.92} &
+    \chaptertwotablecell{\gridconvergencerowC}{\gridconvergencecolG}{0.95} \\
+    \chaptertwotablecell{\gridconvergencerowD}{\gridconvergencecolA}{9} &
+    \chaptertwotablecell{\gridconvergencerowD}{\gridconvergencecolB}{91.653} &
+    \chaptertwotablecell{\gridconvergencerowD}{\gridconvergencecolC}{99.742} &
+    \chaptertwotablecell{\gridconvergencerowD}{\gridconvergencecolD}{100.794} &
+    \chaptertwotablecell{\gridconvergencerowD}{\gridconvergencecolE}{0.90} &
+    \chaptertwotablecell{\gridconvergencerowD}{\gridconvergencecolF}{0.90} &
+    \chaptertwotablecell{\gridconvergencerowD}{\gridconvergencecolG}{0.98} \\
+    \chaptertwotablecell{\gridconvergencerowE}{\gridconvergencecolA}{8} &
+    \chaptertwotablecell{\gridconvergencerowE}{\gridconvergencecolB}{90.859} &
+    \chaptertwotablecell{\gridconvergencerowE}{\gridconvergencecolC}{98.843} &
+    \chaptertwotablecell{\gridconvergencerowE}{\gridconvergencecolD}{99.690} &
+    \chaptertwotablecell{\gridconvergencerowE}{\gridconvergencecolE}{0.87} &
+    \chaptertwotablecell{\gridconvergencerowE}{\gridconvergencecolF}{0.90} &
+    \chaptertwotablecell{\gridconvergencerowE}{\gridconvergencecolG}{1.10} \\
+    \chaptertwotablecell{\gridconvergencerowF}{\gridconvergencecolA}{7} &
+    \chaptertwotablecell{\gridconvergencerowF}{\gridconvergencecolB}{90.165} &
+    \chaptertwotablecell{\gridconvergencerowF}{\gridconvergencecolC}{98.136} &
+    \chaptertwotablecell{\gridconvergencerowF}{\gridconvergencecolD}{98.710} &
+    \chaptertwotablecell{\gridconvergencerowF}{\gridconvergencecolE}{0.76} &
+    \chaptertwotablecell{\gridconvergencerowF}{\gridconvergencecolF}{0.72} &
+    \chaptertwotablecell{\gridconvergencerowF}{\gridconvergencecolG}{0.98} \\
+    \bottomrule
+  \end{tabular}
 \end{table}
 
 由表~\ref{tab:grid-convergence} 可知，随着全局网格尺寸由 12 mm 减小至 7 mm，三种典型振型频率整体下降并逐渐稳定。当网格尺寸由 12 mm 减小至 11 mm 时，频率下降量均大于 1\%；当细化至 10 mm 及以下时，频率变化基本小于 1\%，说明模态结果已趋于收敛。综合考虑模态频率收敛性、计算精度、现实计算效率以及计算资源限制，本文最终选取 10 mm 作为 DTMB4832 五叶桨干模态分析的全局网格尺寸。
@@ -311,25 +378,54 @@
 
 弹性模量是决定结构刚度特性的关键材料参数。随着弹性模量的增大，结构整体刚度提高，各阶模态频率呈现整体上升趋势。基于前述简单理论关系，开展弹性模量对结构模态的影响分析，以验证螺旋桨结构模态频率随弹性模量变化的基本规律。调整弹性模量后，结构模态频率结果如表~\ref{tab:elastic-modulus} 所示，变化趋势如图~\ref{fig:elastic-modulus-analysis} 所示。模型密度设置为 $7500\,\mathrm{kg/m^3}$，泊松比设置为 0.33。结果表明，各振型对应的模态频率随弹性模量变化均表现出较为明显的近线性关系，且随着弹性模量的增大，模态频率整体呈上升趋势。
 
-% 调整下面的倍率即可整体控制表 2.3 大小
-\def\elasticmodulusscale{0.8}
+% 表 2.3：可调整体宽度与各行行高
+\newlength{\elasticmodulustablewidth}
+\newlength{\elasticmoduluslabelcol}
+\newlength{\elasticmodulusdatacol}
+\setlength{\elasticmodulustablewidth}{1.0\textwidth}
+\setlength{\elasticmoduluslabelcol}{0.52\elasticmodulustablewidth}
+\setlength{\elasticmodulusdatacol}{0.12\elasticmodulustablewidth}
+\def\elasticmodulusheadheight{0.3cm}
+\def\elasticmodulusrowA{0.3cm}
+\def\elasticmodulusrowB{0.3cm}
+\def\elasticmodulusrowC{0.3cm}
+\def\elasticmodulusrowD{0.3cm}
 \begin{table}[htbp]
   \centering
   \caption{弹性模量影响分析}
   \label{tab:elastic-modulus}
-  \small
-  \scalebox{\elasticmodulusscale}{
-  \begin{tabular}{ccccc}
+  \setlength{\tabcolsep}{0pt}
+  \zihao{5}
+  \begin{tabular*}{\elasticmodulustablewidth}{@{\extracolsep{\fill}}ccccc@{}}
     \toprule
-    弹性模量(GPa) & 127 & 114.3 & 102.87 & 测试 \\
+    \chaptertwotablecell{\elasticmodulusheadheight}{\elasticmoduluslabelcol}{弹性模量(GPa)} &
+    \chaptertwotablecell{\elasticmodulusheadheight}{\elasticmodulusdatacol}{127} &
+    \chaptertwotablecell{\elasticmodulusheadheight}{\elasticmodulusdatacol}{114.3} &
+    \chaptertwotablecell{\elasticmodulusheadheight}{\elasticmodulusdatacol}{102.87} &
+    \chaptertwotablecell{\elasticmodulusheadheight}{\elasticmodulusdatacol}{测试} \\
     \midrule
-    一阶不同相弯曲模态频率(Hz)   & 1082.4 & 1027.5 & 974.16 & 970.8  \\
-    一阶同相弯曲模态频率(Hz)     & 1195.6 & 1135.2 & 1076.1 & 1068.9 \\
-    一阶对侧反相弯曲模态频率(Hz) & 1215.8 & 1154.3 & 1094.2 & 1087.0 \\
-    与测试结果相比最大误差       & 11.8\% & 6.2\%  & 0.67\% & -      \\
+    \chaptertwotablecell{\elasticmodulusrowA}{\elasticmoduluslabelcol}{一阶不同相弯曲模态频率(Hz)} &
+    \chaptertwotablecell{\elasticmodulusrowA}{\elasticmodulusdatacol}{1082.4} &
+    \chaptertwotablecell{\elasticmodulusrowA}{\elasticmodulusdatacol}{1027.5} &
+    \chaptertwotablecell{\elasticmodulusrowA}{\elasticmodulusdatacol}{974.16} &
+    \chaptertwotablecell{\elasticmodulusrowA}{\elasticmodulusdatacol}{970.8} \\
+    \chaptertwotablecell{\elasticmodulusrowB}{\elasticmoduluslabelcol}{一阶同相弯曲模态频率(Hz)} &
+    \chaptertwotablecell{\elasticmodulusrowB}{\elasticmodulusdatacol}{1195.6} &
+    \chaptertwotablecell{\elasticmodulusrowB}{\elasticmodulusdatacol}{1135.2} &
+    \chaptertwotablecell{\elasticmodulusrowB}{\elasticmodulusdatacol}{1076.1} &
+    \chaptertwotablecell{\elasticmodulusrowB}{\elasticmodulusdatacol}{1068.9} \\
+    \chaptertwotablecell{\elasticmodulusrowC}{\elasticmoduluslabelcol}{一阶对侧反相弯曲模态频率(Hz)} &
+    \chaptertwotablecell{\elasticmodulusrowC}{\elasticmodulusdatacol}{1215.8} &
+    \chaptertwotablecell{\elasticmodulusrowC}{\elasticmodulusdatacol}{1154.3} &
+    \chaptertwotablecell{\elasticmodulusrowC}{\elasticmodulusdatacol}{1094.2} &
+    \chaptertwotablecell{\elasticmodulusrowC}{\elasticmodulusdatacol}{1087.0} \\
+    \chaptertwotablecell{\elasticmodulusrowD}{\elasticmoduluslabelcol}{与测试结果相比最大误差} &
+    \chaptertwotablecell{\elasticmodulusrowD}{\elasticmodulusdatacol}{11.8\%} &
+    \chaptertwotablecell{\elasticmodulusrowD}{\elasticmodulusdatacol}{6.2\%} &
+    \chaptertwotablecell{\elasticmodulusrowD}{\elasticmodulusdatacol}{0.67\%} &
+    \chaptertwotablecell{\elasticmodulusrowD}{\elasticmodulusdatacol}{-} \\
     \bottomrule
-  \end{tabular}
-  }
+  \end{tabular*}
 \end{table}
 
 \begin{figure}[htbp]
@@ -340,36 +436,64 @@
 \end{figure}
 
 泊松比的影响相对次要，但在特定情况下不可忽视。对于实体结构，泊松比会影响结构的体积模量和某些复杂振型。但对于以弯扭响应为主的螺旋桨结构，泊松比对模态频率的影响极小。下面开展泊松比对结构模态的影响分析，以验证螺旋桨结构模态频率随泊松比变化的基本规律。调整泊松比后，结构模态频率结果如表~\ref{tab:poisson-ratio} 所示。模型密度设置为 $7500\,\mathrm{kg/m^3}$，杨氏模量设置为 102.87 GPa。结果表明，各振型对应的模态频率随泊松比变化均表现出较为明显的近线性关系，且随着泊松比的增大，模态频率整体呈上升趋势。
-
-% 调整下面的倍率即可整体控制表 2.4 大小
-\def\poissonratioscale{0.8}
-\begin{table}[htbp]
-  \centering
-  \caption{泊松比影响分析}
+% 表 2.4：可调整体宽度与各行行高
+\newlength{\poissonratiotablewidth}
+\newlength{\poissonratiolabelcol}
+\newlength{\poissonratiodatacol}
+\setlength{\poissonratiotablewidth}{1.0\textwidth}
+\setlength{\poissonratiolabelcol}{0.52\poissonratiotablewidth}
+\setlength{\poissonratiodatacol}{0.12\poissonratiotablewidth}
+\def\poissonratioheadheight{0.3cm}
+\def\poissonratiorowA{0.3cm}
+\def\poissonratiorowB{0.3cm}
+\def\poissonratiorowC{0.3cm}
+\def\poissonratiorowD{0.3cm}
+\begin{center}
+  \captionof{table}{泊松比影响分析}
   \label{tab:poisson-ratio}
-  \small
-  \scalebox{\poissonratioscale}{
-  \begin{tabular}{ccccc}
+  \setlength{\tabcolsep}{0pt}
+  \zihao{5}
+  \begin{tabular*}{\poissonratiotablewidth}{@{\extracolsep{\fill}}ccccc@{}}
     \toprule
-    泊松比 & 0.27 & 0.30 & 0.33 & 测试 \\
+    \chaptertwotablecell{\poissonratioheadheight}{\poissonratiolabelcol}{泊松比} &
+    \chaptertwotablecell{\poissonratioheadheight}{\poissonratiodatacol}{0.27} &
+    \chaptertwotablecell{\poissonratioheadheight}{\poissonratiodatacol}{0.30} &
+    \chaptertwotablecell{\poissonratioheadheight}{\poissonratiodatacol}{0.33} &
+    \chaptertwotablecell{\poissonratioheadheight}{\poissonratiodatacol}{测试} \\
     \midrule
-    一阶不同相弯曲模态频率(Hz)   & 959.84 & 966.98 & 974.16 & 970.8  \\
-    一阶同相弯曲模态频率(Hz)     & 1059.3 & 1067.8 & 1076.1 & 1068.9 \\
-    一阶对侧反相弯曲模态频率(Hz) & 1077.2 & 1085.9 & 1094.2 & 1087.0 \\
-    与测试结果相比最大误差       & 1.1\%  & 0.39\% & 0.67\% & -      \\
+    \chaptertwotablecell{\poissonratiorowA}{\poissonratiolabelcol}{一阶不同相弯曲模态频率(Hz)} &
+    \chaptertwotablecell{\poissonratiorowA}{\poissonratiodatacol}{959.84} &
+    \chaptertwotablecell{\poissonratiorowA}{\poissonratiodatacol}{966.98} &
+    \chaptertwotablecell{\poissonratiorowA}{\poissonratiodatacol}{974.16} &
+    \chaptertwotablecell{\poissonratiorowA}{\poissonratiodatacol}{970.8} \\
+    \chaptertwotablecell{\poissonratiorowB}{\poissonratiolabelcol}{一阶同相弯曲模态频率(Hz)} &
+    \chaptertwotablecell{\poissonratiorowB}{\poissonratiodatacol}{1059.3} &
+    \chaptertwotablecell{\poissonratiorowB}{\poissonratiodatacol}{1067.8} &
+    \chaptertwotablecell{\poissonratiorowB}{\poissonratiodatacol}{1076.1} &
+    \chaptertwotablecell{\poissonratiorowB}{\poissonratiodatacol}{1068.9} \\
+    \chaptertwotablecell{\poissonratiorowC}{\poissonratiolabelcol}{一阶对侧反相弯曲模态频率(Hz)} &
+    \chaptertwotablecell{\poissonratiorowC}{\poissonratiodatacol}{1077.2} &
+    \chaptertwotablecell{\poissonratiorowC}{\poissonratiodatacol}{1085.9} &
+    \chaptertwotablecell{\poissonratiorowC}{\poissonratiodatacol}{1094.2} &
+    \chaptertwotablecell{\poissonratiorowC}{\poissonratiodatacol}{1087.0} \\
+    \chaptertwotablecell{\poissonratiorowD}{\poissonratiolabelcol}{与测试结果相比最大误差} &
+    \chaptertwotablecell{\poissonratiorowD}{\poissonratiodatacol}{1.1\%} &
+    \chaptertwotablecell{\poissonratiorowD}{\poissonratiodatacol}{0.39\%} &
+    \chaptertwotablecell{\poissonratiorowD}{\poissonratiodatacol}{0.67\%} &
+    \chaptertwotablecell{\poissonratiorowD}{\poissonratiodatacol}{-} \\
     \bottomrule
-  \end{tabular}
-  }
-\end{table}
+  \end{tabular*}
+\end{center}
 
-\begin{figure}[htbp]
-  \centering
+\begin{center}% moved fig2.3 earlier to stay on page 15
   \includegraphics[width=0.92\textwidth]{figures/chapter2/from_word/image6.png}
-  \caption{模态频率与最大误差随泊松比变化规律}
+  \captionof{figure}{模态频率与最大误差随泊松比变化规律}
   \label{fig:poisson-ratio-analysis}
-\end{figure}
+\end{center}
 
 材料阻尼对模态频率的影响通常很小，可以忽略不计。阻尼主要影响的是共振峰的尖锐程度，而非共振频率的位置。基于前序研究，通过模态频率的匹配确定材料参数（密度、杨氏模量、泊松比）后，结构在非共振频率附近的振动响应基本确定，在共振频率处，结构的振动幅值近似与阻尼比成反比。增大阻尼可以显著抑制共振峰值，增大反共振峰值，使响应曲线变得平坦。
+
+下面开展模态阻尼对结构加速度频率响应函数的影响分析，以验证螺旋桨结构响应随阻尼变化的基本规律。逐渐更改一阶对侧反向弯曲振型对应的模态阻尼，模态频率附近频率响应函数随模态阻尼变化规律如图~\ref{fig:damping-frf} 所示。模型密度设置为 $7500\,\mathrm{kg/m^3}$，杨氏模量设置为 102.87 GPa，泊松比设置为 0.3。结果表明，模态阻尼的变化会显著影响其对应模态峰的响应幅值：随着模态阻尼的增大，响应峰的幅值逐步减小，且响应曲线趋于平缓。定量分析显示，当模态阻尼增大 6 dB 时，空气中转子加速度的响应峰值约减小 6 dB；此外，模态阻尼的增大还会使模态频率点附近反共振峰的幅值有所提升。
 
 \begin{figure}[htbp]
   \centering
@@ -377,8 +501,6 @@
   \caption{结构加速度频率响应函数随结构阻尼变化趋势}
   \label{fig:damping-frf}
 \end{figure}
-
-下面开展模态阻尼对结构加速度频率响应函数的影响分析，以验证螺旋桨结构响应随阻尼变化的基本规律。逐渐更改一阶对侧反向弯曲振型对应的模态阻尼，模态频率附近频率响应函数随模态阻尼变化规律如图~\ref{fig:damping-frf} 所示。模型密度设置为 $7500\,\mathrm{kg/m^3}$，杨氏模量设置为 102.87 GPa，泊松比设置为 0.3。结果表明，模态阻尼的变化会显著影响其对应模态峰的响应幅值：随着模态阻尼的增大，响应峰的幅值逐步减小，且响应曲线趋于平缓。定量分析显示，当模态阻尼增大 6 dB 时，空气中转子加速度的响应峰值约减小 6 dB；此外，模态阻尼的增大还会使模态频率点附近反共振峰的幅值有所提升。
 
 结果表明，各阶模态频率随弹性模量和泊松比的变化均呈近似线性规律，且总体上随着弹性模量和泊松比的增大而升高。随后，对材料阻尼的影响进行分析，结果显示，阻尼特性对模态频率的影响较小，其主要作用体现在改变共振峰与反共振峰的尖锐程度。
 
@@ -407,9 +529,15 @@
   \centering
   \caption{DTMB 型螺旋桨前 20 阶模态附连水修正系数}
   \label{tab:wet-correction-factor}
-  \small
-  \resizebox{\textwidth}{!}{
-    \begin{tabular}{ccccccccccc}
+  \newlength{\wetcorrectiontablewidth}
+  \newlength{\wetcorrectionlabelcol}
+  \newlength{\wetcorrectiondatacol}
+  \setlength{\wetcorrectiontablewidth}{\textwidth}
+  \setlength{\wetcorrectionlabelcol}{0.12\wetcorrectiontablewidth}
+  \setlength{\wetcorrectiondatacol}{0.08\wetcorrectiontablewidth}
+  \setlength{\tabcolsep}{0pt}
+    \zihao{5}
+    \begin{tabular*}{\wetcorrectiontablewidth}{@{\extracolsep{\fill}}>{\centering\arraybackslash}m{\wetcorrectionlabelcol}*{10}{>{\centering\arraybackslash}m{\wetcorrectiondatacol}}@{}}
       \toprule
       阶次 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
       \midrule
@@ -419,8 +547,7 @@
       \midrule
       修正系数 & 0.9847 & 0.9954 & 0.8972 & 0.8622 & 0.8732 & 0.8841 & 0.9273 & 0.9630 & 0.9476 & 0.9292 \\
       \bottomrule
-    \end{tabular}
-  }
+    \end{tabular*}
 \end{table}
 
 需要说明的是，相较于干模态仿真，湿模态仿真需要同时考虑结构域和流体域，模型规模更大，计算时间更长，计算代价也更高。因此，若在后续机器学习数据库构建过程中对每一组螺旋桨模型均直接进行湿模态仿真，将显著增加计算成本。基于此，本文采用“干模态频率 + 附连水修正系数”的湿模态频率预报方法，而表~\ref{tab:wet-correction-factor} 的内容正是该方法的重要依据。
