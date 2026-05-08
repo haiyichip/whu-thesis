@@ -114,13 +114,17 @@
 
 7 叶螺旋桨的干模态和湿模态结果分别如表~\ref{tab:chapter3-dry-7blade} 和表~\ref{tab:chapter3-wet-7blade} 所示。为了相互验证，同时给出依据第 2.4 节得到的有限元仿真结果。本文依据第 2.4 节建立的有限元仿真方法，对 7 叶螺旋桨的材料参数进行修正。多参数优化结果表明，在第一阶同相弯曲模态频率得到保证后，其他各阶模态频率精度也可以得到保证；各材料参数的修正量均未超过其原始材料属性值的 10\%，满足前文计算规程中关于材料参数修正幅度的要求，说明该修正过程具有合理性。
 
+% 通过列格式中的字号补偿 \resizebox 带来的整体缩小，使输出后的表内文字保持五号
+\newcommand{\chapterthreetablefontA}{\fontsize{14.30bp}{17.16bp}\selectfont}
+\newcommand{\chapterthreetablefontB}{\fontsize{11.57bp}{13.88bp}\selectfont}
+
 \begin{table}[htbp]
   \centering
   \caption{7 叶螺旋桨干模态修正结果与试验结果对比}
   \label{tab:chapter3-dry-7blade}
   \renewcommand{\arraystretch}{1.15}
   \resizebox{\textwidth}{!}{
-  \begin{tabular}{>{\centering\arraybackslash}m{1.2cm}>{\centering\arraybackslash}m{4.4cm}>{\centering\arraybackslash}m{3.6cm}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{3.8cm}}
+  \begin{tabular}{>{\centering\chapterthreetablefontA\arraybackslash}m{1.2cm}>{\centering\chapterthreetablefontA\arraybackslash}m{4.4cm}>{\centering\chapterthreetablefontA\arraybackslash}m{3.6cm}>{\centering\chapterthreetablefontA\arraybackslash}m{2.2cm}>{\centering\chapterthreetablefontA\arraybackslash}m{2.2cm}>{\centering\chapterthreetablefontA\arraybackslash}m{3.8cm}}
     \toprule
     阶次 & 试验振型 & 计算振型 & 试验频率 & 计算频率 & 振型 \\
     \midrule
@@ -146,7 +150,7 @@
   \label{tab:chapter3-wet-7blade}
   \renewcommand{\arraystretch}{1.15}
   \resizebox{\textwidth}{!}{
-  \begin{tabular}{>{\centering\arraybackslash}m{1.2cm}>{\centering\arraybackslash}m{4.4cm}>{\centering\arraybackslash}m{3.6cm}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{3.8cm}}
+  \begin{tabular}{>{\centering\chapterthreetablefontA\arraybackslash}m{1.2cm}>{\centering\chapterthreetablefontA\arraybackslash}m{4.4cm}>{\centering\chapterthreetablefontA\arraybackslash}m{3.6cm}>{\centering\chapterthreetablefontA\arraybackslash}m{2.2cm}>{\centering\chapterthreetablefontA\arraybackslash}m{2.2cm}>{\centering\chapterthreetablefontA\arraybackslash}m{3.8cm}}
     \toprule
     阶次 & 试验振型 & 计算振型 & 试测频率 & 计算频率 & 振型 \\
     \midrule
@@ -178,7 +182,7 @@
   \label{tab:chapter3-10blade}
   \renewcommand{\arraystretch}{1.15}
   \resizebox{\textwidth}{!}{
-  \begin{tabular}{>{\centering\arraybackslash}m{1cm}>{\centering\arraybackslash}m{1.8cm}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{2.2cm}>{\centering\arraybackslash}m{2.4cm}>{\centering\arraybackslash}m{4cm}}
+  \begin{tabular}{>{\centering\chapterthreetablefontB\arraybackslash}m{1cm}>{\centering\chapterthreetablefontB\arraybackslash}m{1.8cm}>{\centering\chapterthreetablefontB\arraybackslash}m{2.2cm}>{\centering\chapterthreetablefontB\arraybackslash}m{2.2cm}>{\centering\chapterthreetablefontB\arraybackslash}m{2.6cm}>{\centering\chapterthreetablefontB\arraybackslash}m{4cm}}
     \toprule
     阶次 & 振型 & 干模态频率 & 湿模态频率 & 湿模态频率/干模态频率 & 测试振型 \\
     \midrule
