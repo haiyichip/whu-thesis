@@ -53,18 +53,21 @@
 
 7 叶螺旋桨测试频率范围设置为 $0.5\sim4096\,\mathrm{Hz}$，频率分辨率为 $0.25\,\mathrm{Hz}$，以覆盖转子低阶整体弯曲、扭转以及部分高阶局部模态频率范围。图~\ref{fig:chapter3-propeller-geometry} 和图~\ref{fig:chapter3-wet-scene} 展示了转子的几何结构与湿模态测试场景。在湿模态测试时，将转子完全浸没于水箱中，并采用细绳进行自由悬吊的方式模拟自由边界条件。
 
-\begin{figure}[htbp]
+\begin{figure}[t]
   \centering
-  \includegraphics[width=0.42\textwidth]{figures/chapter3/from_word/image1.jpeg}
-  \caption{7 叶螺旋桨的几何结构}
-  \label{fig:chapter3-propeller-geometry}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.82\textwidth]{figures/chapter3/from_word/image2.png}
-  \caption{7 叶螺旋桨湿模态测试场景}
-  \label{fig:chapter3-wet-scene}
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[height=5.2cm]{figures/chapter3/from_word/image1.jpeg}
+    \caption{7 叶螺旋桨的几何结构}
+    \label{fig:chapter3-propeller-geometry}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[height=5.2cm]{figures/chapter3/from_word/image2.png}
+    \caption{7 叶螺旋桨湿模态测试场景}
+    \label{fig:chapter3-wet-scene}
+  \end{minipage}
 \end{figure}
 
 如图~\ref{fig:chapter3-sensor} 和图~\ref{fig:chapter3-system} 所示，测试系统主要由便携式计算机、数据采集仪、水密冲击力锤、水密三向压电式加速度传感器及测试分析软件组成。便携式计算机中安装 LMS Test.Lab 14A 测试数据采集与模态分析软件，用于完成测点建模、通道设置、力锤采样、频响函数采集以及模态辨识。数据采集设备采用 SIEMENS LMS SCADAS Mobile 8 通道数据采集仪，其 A/D 转换精度为 24 位，每个通道具有独立 DSP，并支持直流电压、交流电压和 ICP 信号输入。激励设备采用水密力锤，响应测量采用水密三向压电式加速度传感器，传感器通过胶水粘贴于被测结构的桨毂上，用于采集锤击激励后的加速度响应信号。
@@ -85,25 +88,23 @@
 
 在测点布置方面，试验充分利用螺旋桨的回转体特性，并根据振动测试的互易性，通过 LMS 软件建立虚拟测点模型。将加速度传感器固定布置在桨毂内侧作为响应测点，然后在 LMS 中按照实际螺旋桨几何形态建立 7 个叶片的虚拟测点。如图~\ref{fig:chapter3-points} 所示，每个叶片沿弦长方向布置 3 列测点，每列沿展向均布 3 个测点，即每个叶片设置 9 个锤击激励点，7 个叶片共形成 63 个激励测点。
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.70\textwidth]{figures/chapter3/from_word/image5.png}
-  \caption{7 叶螺旋桨和 10 叶螺旋桨测点位置}
+\begin{center}
+  \includegraphics[width=0.62\textwidth]{figures/chapter3/from_word/image5.png}
+  \captionof{figure}{7 叶螺旋桨测点位置}
   \label{fig:chapter3-points}
-\end{figure}
+\end{center}
 
 测试时，传感器位置保持不变，力锤依次敲击各虚拟测点位置，从而获得固定响应点条件下不同激励点对应的频率响应函数。根据振动测试的互易性，该方法本质上等同于固定响应点、移动激励点的 MISO 测试方式，其优点是在只使用单个加速度传感器的情况下，通过移动力锤构造较完整的空间响应信息，从而减少传感器重量对螺旋桨质量分布的影响，提高测试精度。
 
 在力锤激励与信号采集过程中，首先在 LMS Test.Lab 中完成力锤通道和加速度响应通道设置，并通过力锤试采样确定合适的触发电压，以保证系统能够准确捕捉锤击瞬间的输入力信号。正式测试时，力锤沿测点法向或近似法向进行瞬态敲击，使激励尽可能接近短时脉冲。考虑到水中激励易受水阻力、锤击角度和操作者稳定性影响，每个激励点重复敲击 3 次，并通过平均处理减小环境噪声和偶然误差。对质量较差的信号应剔除并重新采集，同时对力锤信号进行加汉宁窗处理，以抑制频谱泄漏，提高 FRF 测试的信噪比和可重复性。
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.92\textwidth]{figures/chapter3/from_word/image6.png}
-  \caption{螺旋桨干模态测试所有测点频响函数平均值}
-  \label{fig:chapter3-frf-average}
-\end{figure}
+完成全部 63 个激励点的 FRF 采集后，利用 LMS TestLab 对测试结果进行模态分析。首先对所有激励点对应的频响函数进行检查，剔除异常曲线，并将有效频响函数进行合并和平均，以获得转子在自由状态下的整体频响特征，如图~\ref{fig:chapter3-frf-average} 所示。频响函数平均曲线可用于初步判断模态频率位置：当频率接近某阶固有频率时，频响函数幅值会出现明显峰值，峰值附近的相位也会发生变化。随后，采用 LMS 中的 PolyMAX 算法进行模态参数辨识，得到对应的模态频率、阻尼比和振型。
 
-完成全部 63 个激励点的 FRF 采集后，利用 LMS Test.Lab 对测试结果进行模态分析。首先对所有激励点对应的频响函数进行检查，剔除异常曲线，并将有效频响函数进行合并和平均，以获得转子在自由状态下的整体频响特征，如图~\ref{fig:chapter3-frf-average} 所示。频响函数平均曲线可用于初步判断模态频率位置：当频率接近某阶固有频率时，频响函数幅值会出现明显峰值，峰值附近的相位也会发生变化。随后，采用 LMS 中的 PolyMAX 算法进行模态参数辨识，得到对应的模态频率、阻尼比和振型。
+\begin{center}
+  \includegraphics[width=0.92\textwidth]{figures/chapter3/from_word/image6.png}
+  \captionof{figure}{螺旋桨干模态测试所有测点频响函数平均值}
+  \label{fig:chapter3-frf-average}
+\end{center}
 
 \section{模态测试结果分析}
 
@@ -165,11 +166,11 @@
   \end{tabular}}
 \end{table}
 
-由表~\ref{tab:chapter3-dry-7blade} 可知，7 叶螺旋桨干模态中各典型一阶振型的计算频率与试验频率的相对偏差均较小，说明修正后的有限元模型能够较准确地反映转子在空气中的结构动力学特性。同时，计算振型与试验振型的动画相似度高，验证了干模态有限元计算结果的可靠性。由表~\ref{tab:chapter3-wet-7blade} 可知，7 叶螺旋桨在水中条件下的各典型一阶模态频率相较于空气中明显降低。湿模态结果中，各典型一阶振型的计算频率与试验频率均保持较高一致性，湿模态计算振型与试验振型的动画也具有较明确的对应关系。整体来看，各一阶典型干模态和湿模态频率的计算结果与试验结果偏差均小于 3.5\%，表明本文建立的干模和湿模态仿真方法能够较好地考虑流体附加质量对模态频率的影响。
+由表~\ref{tab:chapter3-dry-7blade} 可知，7 叶螺旋桨干模态中各典型一阶振型的计算频率与试验频率的相对偏差均较小，说明修正后的有限元模型能够较准确地计算转子在空气中的模态。同时，计算振型与试验振型动画相似度高，验证了干模态有限元计算结果的可靠性。由表~\ref{tab:chapter3-wet-7blade} 可知，7 叶螺旋桨在水中条件下的各典型一阶模态频率相较于空气中明显降低。湿模态结果中，各典型一阶振型的计算频率与试验频率均保持较高一致性，湿模态计算振型与试验振型的动画也具有较明确的对应关系。整体来看，各一阶典型干模态和湿模态频率的计算结果与试验结果偏差均小于 3.5\%，表明本文建立的干模和湿模态仿真方法能够较好地计算出螺旋桨在空气中与水中的模态。
 
 \subsection{10 叶螺旋桨模态测试结果分析}
 
-表~\ref{tab:chapter3-10blade} 列举了 10 叶螺旋桨测试结果中的几个重要振型，并对其干模态频率、湿模态频率及对应振型进行了对比。由表中结果可知，10 叶螺旋桨在干模态和湿模态测试中识别出的典型振型具有较好的对应关系，包括一阶同相弯曲、一阶对侧反相弯曲和一阶同相扭转三种振型。水中测试时，各阶湿模态频率均明显低于对应干模态频率，整体附连水修正系数分布在 0.55--0.60 附近。该结果表明，水介质会导致 10 叶螺旋桨的低阶模态频率明显降低；同时，水介质并未明显改变主要振型特征，干模态与湿模态之间仍具有较明确的振型对应关。 
+表~\ref{tab:chapter3-10blade} 列举了 10 叶螺旋桨测试结果中的几个重要振型，并对其干模态频率、湿模态频率及对应振型进行了对比。如表，10 叶螺旋桨在干模态和湿模态测试中识别出的典型振型具有较好的对应关系。水中测试时，低阶湿模态频率均明显低于对应干模态频率，整体附连水修正系数分布在 0.55--0.60 附近。该结果表明，水介质会导致 10 叶螺旋桨的低阶模态频率明显降低。此外，水介质并未明显改变主要振型特征，干模态与湿模态之间仍具有较明确的振型对应关系。
 
 \begin{table}[htbp]
   \centering

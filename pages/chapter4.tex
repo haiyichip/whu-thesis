@@ -163,79 +163,141 @@ Dropout 可表示为
 
 \subsection{四种模型训练}
 
-基于划分后的训练集、验证集和测试集，本文分别构建随机森林回归模型、梯度提升回归模型、高斯过程回归模型和多层感知机模型，用于建立螺旋桨几何参数与干模态频率之间的预测映射关系。为提高各模型的预测性能，并避免仅凭经验选取超参数带来的偶然性，本文采用随机搜索算法对模型超参数进行优化\cite{chap4:2}。随机搜索算法并不对预设超参数空间中的所有组合进行穷举遍历，而是在给定搜索范围内随机抽取若干组超参数组合\cite{chap4:3}，依次完成模型训练与验证，并以验证集评价指标作为模型选择依据，最终选取验证集表现最优的超参数组合作为该模型的最终配置。各模型超参数搜索空间分别如表~\ref{tab:chapter4-rf-search} 至表~\ref{tab:chapter4-mlp-search} 所示。
+基于划分后的训练集、验证集和测试集，本文分别构建随机森林回归、梯度提升回归、高斯过程回归和多层感知机这四个模型，建立螺旋桨几何参数与干模态频率之间的预测映射关系。为提高各模型的预测性能，避免仅凭经验选取超参数带来的偶然性，本文采用随机搜索算法对模型超参数进行优化\cite{chap4:2}。该算法是在给定搜索范围内随机抽取若干组超参数组合\cite{chap4:3}，依次完成模型训练与验证，并以验证集评价指标作为模型选择依据，最终选取表现最优的超参数组合作为该模型的最终配置。各模型超参数搜索空间分别如表~\ref{tab:chapter4-rf-search} 至表~\ref{tab:chapter4-mlp-search} 所示。
 
+\providecommand{\chapterfourtablecell}[3]{\parbox[c][#1][c]{#2}{\centering #3}}
+
+% 表 4.1：可调列宽与各行行高
+\def\rfsearchcolA{4.1cm}
+\def\rfsearchcolB{9.6cm}
+\def\rfsearchheadheight{0.5cm}
+\def\rfsearchrowA{0.5cm}
+\def\rfsearchrowB{0.5cm}
+\def\rfsearchrowC{0.5cm}
+\def\rfsearchrowD{0.5cm}
+\def\rfsearchrowE{0.5cm}
 \begin{table}[htbp]
   \centering
   \caption{随机森林模型超参数搜索空间}
   \label{tab:chapter4-rf-search}
-  \renewcommand{\arraystretch}{1.18}
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cc}
+  \setlength{\tabcolsep}{0pt}
+  \begin{tabular}{@{}c@{\hspace{0.8em}}c@{}}
     \toprule
-    超参数 & 取值 \\
+    \chapterfourtablecell{\rfsearchheadheight}{\rfsearchcolA}{超参数} &
+    \chapterfourtablecell{\rfsearchheadheight}{\rfsearchcolB}{取值} \\
     \midrule
-    \texttt{n\_estimators} & $\{50, 100, 150, \cdots, 1000\}$，步长为 50 \\
-    \texttt{max\_depth} & $\{\mathrm{None}, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100\}$ \\
-    \texttt{min\_samples\_split} & $\{2, 5, 10, 20, 50\}$ \\
-    \texttt{min\_samples\_leaf} & $\{1, 2, 4, 8, 16\}$ \\
-    \texttt{bootstrap} & $\{\mathrm{True}, \mathrm{False}\}$ \\
+    \chapterfourtablecell{\rfsearchrowA}{\rfsearchcolA}{\texttt{n\_estimators}} &
+    \chapterfourtablecell{\rfsearchrowA}{\rfsearchcolB}{$\{50, 100, 150, \cdots, 1000\}$，步长为 50} \\
+    \chapterfourtablecell{\rfsearchrowB}{\rfsearchcolA}{\texttt{max\_depth}} &
+    \chapterfourtablecell{\rfsearchrowB}{\rfsearchcolB}{$\{\mathrm{None}, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100\}$} \\
+    \chapterfourtablecell{\rfsearchrowC}{\rfsearchcolA}{\texttt{min\_samples\_split}} &
+    \chapterfourtablecell{\rfsearchrowC}{\rfsearchcolB}{$\{2, 5, 10, 20, 50\}$} \\
+    \chapterfourtablecell{\rfsearchrowD}{\rfsearchcolA}{\texttt{min\_samples\_leaf}} &
+    \chapterfourtablecell{\rfsearchrowD}{\rfsearchcolB}{$\{1, 2, 4, 8, 16\}$} \\
+    \chapterfourtablecell{\rfsearchrowE}{\rfsearchcolA}{\texttt{bootstrap}} &
+    \chapterfourtablecell{\rfsearchrowE}{\rfsearchcolB}{$\{\mathrm{True}, \mathrm{False}\}$} \\
     \bottomrule
-  \end{tabular*}
+  \end{tabular}
 \end{table}
 
+% 表 4.2：可调列宽与各行行高
+\def\gbrsearchcolA{4.1cm}
+\def\gbrsearchcolB{9.6cm}
+\def\gbrsearchheadheight{0.5cm}
+\def\gbrsearchrowA{0.5cm}
+\def\gbrsearchrowB{0.5cm}
+\def\gbrsearchrowC{0.5cm}
+\def\gbrsearchrowD{0.5cm}
+\def\gbrsearchrowE{0.5cm}
 \begin{table}[htbp]
   \centering
   \caption{梯度提升回归模型超参数搜索空间}
   \label{tab:chapter4-gbr-search}
-  \renewcommand{\arraystretch}{1.18}
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cc}
+  \setlength{\tabcolsep}{0pt}
+  \begin{tabular}{@{}c@{\hspace{0.8em}}c@{}}
     \toprule
-    超参数 & 取值 \\
+    \chapterfourtablecell{\gbrsearchheadheight}{\gbrsearchcolA}{超参数} &
+    \chapterfourtablecell{\gbrsearchheadheight}{\gbrsearchcolB}{取值} \\
     \midrule
-    \texttt{n\_estimators} & $\{50, 100, 150, \cdots, 1000\}$，步长为 50 \\
-    \texttt{learning\_rate} & $\{0.01, 0.05, 0.1, 0.2, 0.3, 0.5\}$ \\
-    \texttt{max\_depth} & $\{3, 5, 10, 20, 30, 40, 50\}$ \\
-    \texttt{min\_samples\_split} & $\{2, 5, 10, 20, 50\}$ \\
-    \texttt{min\_samples\_leaf} & $\{1, 2, 4, 8, 16\}$ \\
+    \chapterfourtablecell{\gbrsearchrowA}{\gbrsearchcolA}{\texttt{n\_estimators}} &
+    \chapterfourtablecell{\gbrsearchrowA}{\gbrsearchcolB}{$\{50, 100, 150, \cdots, 1000\}$，步长为 50} \\
+    \chapterfourtablecell{\gbrsearchrowB}{\gbrsearchcolA}{\texttt{learning\_rate}} &
+    \chapterfourtablecell{\gbrsearchrowB}{\gbrsearchcolB}{$\{0.01, 0.05, 0.1, 0.2, 0.3, 0.5\}$} \\
+    \chapterfourtablecell{\gbrsearchrowC}{\gbrsearchcolA}{\texttt{max\_depth}} &
+    \chapterfourtablecell{\gbrsearchrowC}{\gbrsearchcolB}{$\{3, 5, 10, 20, 30, 40, 50\}$} \\
+    \chapterfourtablecell{\gbrsearchrowD}{\gbrsearchcolA}{\texttt{min\_samples\_split}} &
+    \chapterfourtablecell{\gbrsearchrowD}{\gbrsearchcolB}{$\{2, 5, 10, 20, 50\}$} \\
+    \chapterfourtablecell{\gbrsearchrowE}{\gbrsearchcolA}{\texttt{min\_samples\_leaf}} &
+    \chapterfourtablecell{\gbrsearchrowE}{\gbrsearchcolB}{$\{1, 2, 4, 8, 16\}$} \\
     \bottomrule
-  \end{tabular*}
+  \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
-  \centering
-  \caption{高斯过程回归模型超参数搜索空间}
+% 表 4.3：可调列宽与各行行高
+\def\gprsearchcolA{4.1cm}
+\def\gprsearchcolB{9.6cm}
+\def\gprsearchheadheight{0.5cm}
+\def\gprsearchrowA{0.5cm}
+\def\gprsearchrowB{0.5cm}
+\def\gprsearchrowC{0.5cm}
+\def\gprsearchrowD{0.5cm}
+\def\gprsearchrowE{0.5cm}
+\begin{center}
+  \captionof{table}{高斯过程回归模型超参数搜索空间}
   \label{tab:chapter4-gpr-search}
-  \renewcommand{\arraystretch}{1.18}
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cc}
+  \setlength{\tabcolsep}{0pt}
+  \begin{tabular}{@{}c@{\hspace{0.8em}}c@{}}
     \toprule
-    超参数 & 取值/范围 \\
+    \chapterfourtablecell{\gprsearchheadheight}{\gprsearchcolA}{超参数} &
+    \chapterfourtablecell{\gprsearchheadheight}{\gprsearchcolB}{取值/范围} \\
     \midrule
-    \texttt{length\_scale} & $10^{[-1,2]}$，对数均匀分布 \\
-    \texttt{constant\_value} & $10^{[-1,2]}$，对数均匀分布 \\
-    \texttt{noise\_level} & $10^{[-4,0]}$，对数均匀分布 \\
-    \texttt{alpha} & $10^{[-8,-3]}$，对数均匀分布 \\
-    \texttt{kernel\_choice} &
-    \shortstack{$\{\mathrm{RBF}+\mathrm{White},\ \mathrm{Matern}+\mathrm{White},$ \\ $\mathrm{RBF}\times\mathrm{Matern}+\mathrm{White}\}$} \\
+    \chapterfourtablecell{\gprsearchrowA}{\gprsearchcolA}{\texttt{length\_scale}} &
+    \chapterfourtablecell{\gprsearchrowA}{\gprsearchcolB}{$10^{[-1,2]}$，对数均匀分布} \\
+    \chapterfourtablecell{\gprsearchrowB}{\gprsearchcolA}{\texttt{constant\_value}} &
+    \chapterfourtablecell{\gprsearchrowB}{\gprsearchcolB}{$10^{[-1,2]}$，对数均匀分布} \\
+    \chapterfourtablecell{\gprsearchrowC}{\gprsearchcolA}{\texttt{noise\_level}} &
+    \chapterfourtablecell{\gprsearchrowC}{\gprsearchcolB}{$10^{[-4,0]}$，对数均匀分布} \\
+    \chapterfourtablecell{\gprsearchrowD}{\gprsearchcolA}{\texttt{alpha}} &
+    \chapterfourtablecell{\gprsearchrowD}{\gprsearchcolB}{$10^{[-8,-3]}$，对数均匀分布} \\
+    \chapterfourtablecell{\gprsearchrowE}{\gprsearchcolA}{\texttt{kernel\_choice}} &
+    \chapterfourtablecell{\gprsearchrowE}{\gprsearchcolB}{\shortstack{$\{\mathrm{RBF}+\mathrm{White},\ \mathrm{Matern}+\mathrm{White}, \mathrm{RBF}\times\mathrm{Matern}+\mathrm{White}\}$}} \\
     \bottomrule
-  \end{tabular*}
-\end{table}
+  \end{tabular}
+\end{center}
 
+\clearpage
+
+% 表 4.4：可调列宽与各行行高
+\def\mlpsearchcolA{4.1cm}
+\def\mlpsearchcolB{9.6cm}
+\def\mlpsearchheadheight{0.5cm}
+\def\mlpsearchrowA{0.5cm}
+\def\mlpsearchrowB{0.5cm}
+\def\mlpsearchrowC{0.5cm}
+\def\mlpsearchrowD{0.5cm}
+\def\mlpsearchrowE{0.5cm}
 \begin{table}[htbp]
   \centering
   \caption{多层感知机模型超参数搜索空间}
   \label{tab:chapter4-mlp-search}
-  \renewcommand{\arraystretch}{1.18}
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cc}
+  \setlength{\tabcolsep}{0pt}
+  \begin{tabular}{@{}c@{\hspace{0.8em}}c@{}}
     \toprule
-    超参数 & 取值/范围 \\
+    \chapterfourtablecell{\mlpsearchheadheight}{\mlpsearchcolA}{超参数} &
+    \chapterfourtablecell{\mlpsearchheadheight}{\mlpsearchcolB}{取值/范围} \\
     \midrule
-    \texttt{n\_hidden} & $\{2, 4, 6, 8, 10\}$ \\
-    \texttt{n\_neurons} & $[32,128]$，均匀整数分布 \\
-    \texttt{learning\_rate} & $10^{[-4,-1]}$，对数均匀分布 \\
-    \texttt{batch\_size} & $\{4, 8, 16, 32\}$ \\
-    \texttt{dropout} & $10^{[-3,-1]}$，对数均匀分布 \\
+    \chapterfourtablecell{\mlpsearchrowA}{\mlpsearchcolA}{\texttt{n\_hidden}} &
+    \chapterfourtablecell{\mlpsearchrowA}{\mlpsearchcolB}{$\{2, 4, 6, 8, 10\}$} \\
+    \chapterfourtablecell{\mlpsearchrowB}{\mlpsearchcolA}{\texttt{n\_neurons}} &
+    \chapterfourtablecell{\mlpsearchrowB}{\mlpsearchcolB}{$[32,128]$，均匀整数分布} \\
+    \chapterfourtablecell{\mlpsearchrowC}{\mlpsearchcolA}{\texttt{learning\_rate}} &
+    \chapterfourtablecell{\mlpsearchrowC}{\mlpsearchcolB}{$10^{[-4,-1]}$，对数均匀分布} \\
+    \chapterfourtablecell{\mlpsearchrowD}{\mlpsearchcolA}{\texttt{batch\_size}} &
+    \chapterfourtablecell{\mlpsearchrowD}{\mlpsearchcolB}{$\{4, 8, 16, 32\}$} \\
+    \chapterfourtablecell{\mlpsearchrowE}{\mlpsearchcolA}{\texttt{dropout}} &
+    \chapterfourtablecell{\mlpsearchrowE}{\mlpsearchcolB}{$10^{[-3,-1]}$，对数均匀分布} \\
     \bottomrule
-  \end{tabular*}
+  \end{tabular}
 \end{table}
 
 \subsection{训练结果分析}
@@ -263,9 +325,8 @@ Dropout 可表示为
 
 四种模型在测试集整体上的评价结果如表~\ref{tab:chapter4-overall-metrics} 所示。可以看出，多层感知机模型在四项指标上均取得了最优结果，表现出最强的综合预测能力；高斯过程回归模型次之；梯度提升回归模型同样具有较高精度；随机森林模型的整体精度相对较低。
 
-\begin{table}[htbp]
-  \centering
-  \caption{四种模型在测试集上整体的 MAE、RMSE、$R^2$ 和 MAPE}
+\begin{center}
+  \captionof{table}{四种模型在测试集上整体的 MAE、RMSE、$R^2$ 和 MAPE}
   \label{tab:chapter4-overall-metrics}
   \renewcommand{\arraystretch}{1.18}
   \begin{tabular}{c c c c c}
@@ -278,18 +339,15 @@ Dropout 可表示为
     多层感知机模型 & 5.133937 & 7.445019 & 0.996914 & 1.889931 \\
     \bottomrule
   \end{tabular}
-\end{table}
+\end{center}
 
 图~\ref{fig:chapter4-rmse-all} 给出了四种模型在各阶模态处的 RMSE 对比结果。从整体趋势看，随机森林模型在多数阶次上的误差均显著高于其余三种模型，说明其对高维连续几何参数到模态频率之间的平滑映射关系刻画仍有不足。梯度提升回归模型、高斯过程回归模型和多层感知机模型则在各阶模态上均表现出较低误差，其中多层感知机模型在大多数阶次上仍保持较小 RMSE。
 
-\clearpage
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image1.png}
-  \caption{四种模型在各阶模态处 RMSE 比较图}
+\begin{center}
+  \includegraphics[width=0.74\textwidth]{figures/chapter4/from_word/image1.png}
+  \captionof{figure}{四种模型在各阶模态处 RMSE 比较图}
   \label{fig:chapter4-rmse-all}
-\end{figure}
+\end{center}
 
 为进一步比较精度较高的三种模型，图~\ref{fig:chapter4-mae-three} 至图~\ref{fig:chapter4-mape-three} 分别给出了梯度提升回归模型、高斯过程回归模型和多层感知机模型在各阶模态处的 MAE、RMSE、$R^2$ 和 MAPE。结果表明，三种模型在低阶与中阶模态上的预测精度均较高，但随着阶次升高，部分模态由于频率分布更密集、样本映射更复杂，误差会出现一定波动。在这种情况下，多层感知机模型仍表现出较好的稳定性，说明其在处理多输出强非线性耦合问题时具有优势。
 
@@ -300,28 +358,25 @@ Dropout 可表示为
   \label{fig:chapter4-mae-three}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image3.png}
-  \caption{三种模型在各阶模态处 RMSE 比较图}
-  \label{fig:chapter4-rmse-three}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image4.png}
-  \caption{三种模型在各阶模态处 $R^2$ 比较图}
-  \label{fig:chapter4-r2-three}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image5.png}
-  \caption{三种模型在各阶模态处 MAPE 比较图}
-  \label{fig:chapter4-mape-three}
-\end{figure}
-
 \clearpage
+
+\begin{center}
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image3.png}
+  \captionof{figure}{三种模型在各阶模态处 RMSE 比较图}
+  \label{fig:chapter4-rmse-three}
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image4.png}
+  \captionof{figure}{三种模型在各阶模态处 $R^2$ 比较图}
+  \label{fig:chapter4-r2-three}
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.78\textwidth]{figures/chapter4/from_word/image5.png}
+  \captionof{figure}{三种模型在各阶模态处 MAPE 比较图}
+  \label{fig:chapter4-mape-three}
+\end{center}
 
 综合表~\ref{tab:chapter4-overall-metrics} 以及图~\ref{fig:chapter4-rmse-all} 至图~\ref{fig:chapter4-mape-three} 的结果，可以认为多层感知机模型在本文螺旋桨干模态频率预测问题上具有最佳综合性能。一方面，前馈神经网络通过多层非线性映射能够充分学习几何特征之间的复杂耦合；另一方面，本文采用的标准化、Layer Normalization 和 Dropout 等策略有效提高了模型训练稳定性并抑制了过拟合。
 
